@@ -46,11 +46,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(
     name: String,
-    viewModel: NowPlayingViewModel = koinViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: NowPlayingViewModel = koinViewModel()
 ) {
     val movies = viewModel.ldNowPlayingMovies.collectAsState().value
-
     LazyColumn {
         items(movies.size) { index ->
             Text(
