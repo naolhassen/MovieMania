@@ -1,9 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.serialization)
-    kotlin("kapt")
 }
 
 android {
@@ -70,12 +68,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    implementation(libs.hilt.navigation.compose)
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime)
 
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.serialization.json)
+
+    // Retrofit
+    implementation(libs.bundles.rerofit)
+
+    // Koin
+    implementation(libs.bundles.koin)
 }
