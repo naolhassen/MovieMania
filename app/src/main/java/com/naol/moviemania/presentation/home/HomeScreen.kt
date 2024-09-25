@@ -1,7 +1,9 @@
 package com.naol.moviemania.presentation.home
 
-import androidx.compose.foundation.layout.Column
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,18 +11,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.naol.moviemania.presentation.home.nowplaying.NowPlayingScreen
+import com.naol.moviemania.presentation.home.popularmovies.PopularMoviesScreen
 import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     NowPlayingScreen(modifier = modifier)
-    Column(modifier = modifier) {
-        NowPlayingScreen(modifier = modifier)
-        SectionTitle(title = "Popular Movies", modifier = Modifier.padding(16.dp))
+    LazyColumn(modifier = modifier) {
+        item { NowPlayingScreen(modifier = modifier) }
+        item { SectionTitle(title = "Popular Movies", modifier = Modifier.padding(16.dp)) }
+        item { PopularMoviesScreen(modifier = modifier) }
+        item { SectionTitle(title = "Top Rated Movies", modifier = Modifier.padding(16.dp)) }
+//        TopRatedMoviesScreen(modifier = modifier)
     }
 }
 

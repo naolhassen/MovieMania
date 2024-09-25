@@ -130,27 +130,3 @@ fun NowPlaying(
         }
     }
 }
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview
-@Composable
-private fun HomeScreenPreview() {
-    val nowPlaying = NowPlaying(
-        false,
-        "The Shawshank Redemption",
-        listOf(1, 2, 3),
-        1,
-        "A banker's son escapes his life and enters a world that seems to reject him.",
-        "Frank Darabont",
-        "0.9",
-        5.0,
-        "1994-09-23",
-        "1994-10-03",
-        "The Shawshank Redemption",
-        false,
-        9.3,
-        116
-    )
-
-    NowPlaying(nowPlaying)
-}

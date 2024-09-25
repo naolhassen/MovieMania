@@ -1,9 +1,11 @@
 package com.naol.moviemania
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,6 +47,7 @@ import kotlinx.coroutines.flow.collect
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -57,6 +60,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
@@ -67,9 +71,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
         modifier = Modifier
             .fillMaxSize()
             .background(PrimaryColor),
-        topBar = {
-            TopAppBar(title = { Text("Movie Mania") })
-        },
+//        topBar = {
+//            TopAppBar(title = { Text("Movie Mania") })
+//        },
         bottomBar = {
             NavigationBar {
                 bottomNavItems.forEachIndexed { index, item ->
@@ -101,6 +105,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(navController, startDestination = bottomNavItems[0].route) {
