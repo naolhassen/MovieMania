@@ -1,4 +1,4 @@
-package com.naol.moviemania.presentation.ui.nowplaying
+package com.naol.moviemania.presentation.home.nowplaying
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,24 +16,22 @@ class NowPlayingViewModel(private val getNowPlayingMoviesUseCase: GetNowPlayingM
     val ldNowPlayingMovies = _ldNowPlayingMovies.asStateFlow()
 
     init {
-        getNowPlayingMovies()
-    }
-
-    private fun getNowPlayingMovies() = viewModelScope.launch {
-        getNowPlayingMoviesUseCase.execute().collect { result ->
-            when (result) {
-                is NetworkResult.Success -> {
-                    result.data.results.let {
-                        _ldNowPlayingMovies.emit(it)
+        viewModelScope.launch {
+            getNowPlayingMoviesUseCase.execute().collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        result.data.results.let {
+                            _ldNowPlayingMovies.emit(it)
+                        }
                     }
-                }
 
-                is NetworkResult.Error -> {
-                    _ldNowPlayingMovies.emit(emptyList())
-                }
+                    is NetworkResult.Error -> {
+                        _ldNowPlayingMovies.emit(emptyList())
+                    }
 
-                NetworkResult.Loading -> {
+                    NetworkResult.Loading -> {
 
+                    }
                 }
             }
         }

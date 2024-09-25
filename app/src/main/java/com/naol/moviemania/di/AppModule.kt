@@ -8,7 +8,8 @@ import com.naol.moviemania.data.api.TMDBApi.Companion.BASE_URL
 import com.naol.moviemania.data.repository.MovieManiaRepositoryImpl
 import com.naol.moviemania.domain.repository.MovieManiaRepository
 import com.naol.moviemania.domain.usecase.GetNowPlayingMoviesUseCase
-import com.naol.moviemania.presentation.ui.nowplaying.NowPlayingViewModel
+import com.naol.moviemania.presentation.home.nowplaying.NowPlayingViewModel
+import com.naol.moviemania.presentation.home.HomeViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.dsl.viewModel
@@ -50,6 +51,9 @@ val appModule = module {
         GetNowPlayingMoviesUseCase(get(named("remote")))
     }
 
+    viewModel {
+        HomeViewModel(get())
+    }
     viewModel {
         NowPlayingViewModel(get())
     }

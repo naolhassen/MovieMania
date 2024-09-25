@@ -6,6 +6,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
@@ -41,6 +42,6 @@ val bottomNavItems = listOf(
         title = "Favorite",
         route = "favorite",
         selectedIcon = Icons.Filled.Favorite,
-        unselectedIcon = Icons.Outlined.Favorite
+        unselectedIcon = Icons.Outlined.FavoriteBorder
     )
 )

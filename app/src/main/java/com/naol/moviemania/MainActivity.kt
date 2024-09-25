@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -25,16 +26,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.naol.moviemania.data.NetworkResult
 import com.naol.moviemania.data.model.bottomNavItems
-import com.naol.moviemania.presentation.ui.nowplaying.NowPlayingViewModel
+import com.naol.moviemania.presentation.home.nowplaying.NowPlayingViewModel
+import com.naol.moviemania.presentation.home.HomeScreen
 import com.naol.moviemania.ui.theme.MovieManiaTheme
 import com.naol.moviemania.ui.theme.PrimaryColor
+import com.naol.moviemania.ui.theme.SecondaryColor
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.compose.koinViewModel
 
@@ -82,7 +88,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         icon = {
                             Icon(
                                 imageVector = if (index == selectedIndex) item.selectedIcon else item.unselectedIcon,
-                                contentDescription = item.title
+                                contentDescription = item.title,
+                                tint = if (index == selectedIndex) PrimaryColor else Color.Unspecified,
                             )
                         }
                     )
@@ -100,7 +107,7 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
         bottomNavItems.forEach { item ->
             composable(item.route) {
                 when (item.route) {
-                    "home" -> HomeScreen()
+                    "home" -> HomeScreen(modifier = Modifier.padding(innerPadding))
                     "search" -> SearchScreen()
                     "profile" -> ProfileScreen()
                     "favorite" -> FavoriteScreen()
@@ -112,27 +119,28 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
 
 @Composable
 fun FavoriteScreen() {
-    Text(text = "FavoriteScreen ",
-        color = PrimaryColor)
+    Text(
+        text = "FavoriteScreen ",
+        color = PrimaryColor
+    )
 }
 
 @Composable
 fun ProfileScreen() {
-    Text(text = "ProfileScreen ",
-        color = PrimaryColor)
+    Text(
+        text = "ProfileScreen ",
+        color = PrimaryColor
+    )
 }
 
 @Composable
 fun SearchScreen() {
-    Text(text = "SearchScreen ",
-        color = PrimaryColor)
+    Text(
+        text = "SearchScreen ",
+        color = PrimaryColor
+    )
 }
 
-@Composable
-fun HomeScreen() {
-    Text(text = "HomeScreen ",
-        color = PrimaryColor)
-}
 
 @Composable
 fun Greeting(
