@@ -1,10 +1,10 @@
 package com.naol.moviemania.domain.mapper
 
-import com.naol.moviemania.data.model.NowPlaying
+import com.naol.moviemania.data.model.ApiMovie
 import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.domain.util.toDate
 
-fun NowPlaying.toNowPlayingMovie(): Movie {
+fun ApiMovie.toNowPlayingMovie(): Movie {
     return Movie(
         id = this.id,
         title = this.title,

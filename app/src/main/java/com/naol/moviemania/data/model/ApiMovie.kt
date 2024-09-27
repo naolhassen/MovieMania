@@ -1,6 +1,6 @@
 package com.naol.moviemania.data.model
 
-data class NowPlaying(
+data class ApiMovie(
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,
