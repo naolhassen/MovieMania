@@ -12,6 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.naol.moviemania.presentation.home.nowplaying.NowPlayingScreen
 import com.naol.moviemania.presentation.home.popularmovies.PopularMoviesScreen
+import com.naol.moviemania.presentation.home.topratedmovies.TopRatedMoviesScreen
+import com.naol.moviemania.presentation.home.upcomingmovies.UpcomingMoviesScreen
 import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 
@@ -27,7 +29,9 @@ fun HomeScreen(
         item { SectionTitle(title = "Popular Movies", modifier = Modifier.padding(16.dp)) }
         item { PopularMoviesScreen(modifier = modifier) }
         item { SectionTitle(title = "Top Rated Movies", modifier = Modifier.padding(16.dp)) }
-//        TopRatedMoviesScreen(modifier = modifier)
+        item { TopRatedMoviesScreen(modifier = modifier) }
+        item { SectionTitle(title = "Upcoming Movies", modifier = Modifier.padding(16.dp)) }
+        item { UpcomingMoviesScreen(modifier = modifier) }
     }
 }
 

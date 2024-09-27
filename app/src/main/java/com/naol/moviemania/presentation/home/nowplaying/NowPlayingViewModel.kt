@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naol.moviemania.data.NetworkResult
 import com.naol.moviemania.domain.mapper.toNowPlayingMovie
-import com.naol.moviemania.domain.model.NowPlayingMovie
+import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.domain.usecase.GetNowPlayingMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class NowPlayingViewModel(private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase) :
     ViewModel() {
     private val _ldNowPlayingMovies =
-        MutableStateFlow<List<NowPlayingMovie>>(emptyList())
+        MutableStateFlow<List<Movie>>(emptyList())
     val ldNowPlayingMovies = _ldNowPlayingMovies.asStateFlow()
 
     init {

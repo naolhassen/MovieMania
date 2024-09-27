@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
-import com.naol.moviemania.domain.model.NowPlayingMovie
+import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.NeutralColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
@@ -49,7 +49,7 @@ fun NowPlayingScreen(
 
 @Composable
 fun NowPlaying(
-    nowPlaying: NowPlayingMovie, modifier: Modifier = Modifier
+    nowPlaying: Movie, modifier: Modifier = Modifier
 ) {
     val imagePath = IMAGE_URL + nowPlaying.backdropPath
 
