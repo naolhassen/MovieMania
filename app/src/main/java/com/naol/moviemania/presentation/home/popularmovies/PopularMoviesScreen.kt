@@ -12,14 +12,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -34,6 +35,7 @@ import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.data.model.NowPlaying
 import com.naol.moviemania.presentation.home.nowplaying.NowPlayingViewModel
 import com.naol.moviemania.ui.theme.AccentColor
+import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.SecondaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 import org.koin.androidx.compose.koinViewModel
@@ -62,9 +64,13 @@ fun PopularMovie(
     modifier: Modifier = Modifier
 ) {
     Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         modifier = Modifier
             .width(150.dp)
             .fillMaxHeight()
+            .background(Color.Transparent)
+
     ) {
 
         val imagePath = IMAGE_URL + movie.poster_path
@@ -81,7 +87,7 @@ fun PopularMovie(
             RatingIndicator(rating = movie.vote_average)
             Text(
                 text = buildAnnotatedString {
-                    append((movie.vote_average*10).toInt().toString())
+                    append((movie.vote_average * 10).toInt().toString())
                     withStyle(
                         style = SpanStyle(
                             baselineShift = BaselineShift.Superscript,
@@ -105,11 +111,15 @@ fun PopularMovie(
             text = movie.title,
             fontWeight = FontWeight.Bold,
             fontFamily = robotoFontFamily,
+            fontSize = 14.sp,
             modifier = Modifier
                 .padding(start = 16.dp)
         )
         Text(
             text = "1994-09-23",
+            fontWeight = FontWeight.Light,
+            fontFamily = robotoFontFamily,
+            fontSize = 12.sp,
             modifier = Modifier
                 .padding(start = 16.dp)
         )

@@ -67,11 +67,11 @@ fun NowPlaying(
         AsyncImage(
             model = imagePath,
             contentDescription = nowPlaying.title,
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
                 .fillMaxWidth()
-
+                .padding(4.dp)
         )
 
         Icon(
@@ -121,7 +121,7 @@ fun NowPlaying(
             )
             Icon(
                 imageVector = Icons.Default.Star,
-                tint = PrimaryColor,
+                tint = AccentColor,
                 contentDescription = "",
                 modifier = Modifier
                     .align(Alignment.CenterVertically)

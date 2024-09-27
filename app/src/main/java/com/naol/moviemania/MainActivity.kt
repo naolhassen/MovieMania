@@ -71,9 +71,9 @@ fun MainScreen(modifier: Modifier = Modifier) {
         modifier = Modifier
             .fillMaxSize()
             .background(PrimaryColor),
-//        topBar = {
-//            TopAppBar(title = { Text("Movie Mania") })
-//        },
+        topBar = {
+            TopAppBar(title = { Text("Movie Mania") })
+        },
         bottomBar = {
             NavigationBar {
                 bottomNavItems.forEachIndexed { index, item ->
