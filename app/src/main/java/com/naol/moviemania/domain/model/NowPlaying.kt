@@ -1,6 +1,6 @@
 package com.naol.moviemania.domain.model
 
-data class NowPlaying(
+data class NowPlayingMovie(
     val id: Int,
     val title: String,
     val overview: String,

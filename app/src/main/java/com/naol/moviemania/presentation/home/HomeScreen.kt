@@ -16,7 +16,7 @@ import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier

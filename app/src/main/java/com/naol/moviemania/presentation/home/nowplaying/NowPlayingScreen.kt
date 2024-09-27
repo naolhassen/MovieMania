@@ -1,7 +1,5 @@
 package com.naol.moviemania.presentation.home.nowplaying
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,20 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
-import com.naol.moviemania.data.model.NowPlaying
-import com.naol.moviemania.domain.util.toDate
+import com.naol.moviemania.domain.model.NowPlayingMovie
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.NeutralColor
-import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 import org.koin.androidx.compose.koinViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun NowPlayingScreen(
     modifier: Modifier = Modifier,
@@ -52,12 +47,11 @@ fun NowPlayingScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NowPlaying(
-    nowPlaying: NowPlaying, modifier: Modifier = Modifier
+    nowPlaying: NowPlayingMovie, modifier: Modifier = Modifier
 ) {
-    val imagePath = IMAGE_URL + nowPlaying.backdrop_path
+    val imagePath = IMAGE_URL + nowPlaying.backdropPath
 
     Box(
         modifier = Modifier
@@ -99,7 +93,7 @@ fun NowPlaying(
 
             )
             Text(
-                text = nowPlaying.release_date.toDate(),
+                text = nowPlaying.releaseDate,
                 fontFamily = robotoFontFamily,
                 fontWeight = FontWeight.Light,
                 fontSize = 14.sp,
@@ -112,7 +106,7 @@ fun NowPlaying(
                 .padding(16.dp)
         ) {
             Text(
-                text = "%.1f".format(nowPlaying.vote_average),
+                text = "%.1f".format(nowPlaying.voteAverage),
                 color = NeutralColor,
                 fontFamily = robotoFontFamily,
                 fontWeight = FontWeight.Bold,

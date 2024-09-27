@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.data.model.NowPlaying
+import com.naol.moviemania.domain.model.NowPlayingMovie
 import com.naol.moviemania.presentation.home.nowplaying.NowPlayingViewModel
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.PrimaryColor
@@ -60,7 +61,7 @@ fun PopularMoviesScreen(
 
 @Composable
 fun PopularMovie(
-    movie: NowPlaying,
+    movie: NowPlayingMovie,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -73,7 +74,7 @@ fun PopularMovie(
 
     ) {
 
-        val imagePath = IMAGE_URL + movie.poster_path
+        val imagePath = IMAGE_URL + movie.posterPath
         AsyncImage(
             model = imagePath,
             contentDescription = ""
@@ -84,10 +85,10 @@ fun PopularMovie(
                 .size(width = 50.dp, height = 50.dp)
                 .offset(y = (-20).dp, x = 8.dp)
         ) {
-            RatingIndicator(rating = movie.vote_average)
+            RatingIndicator(rating = movie.voteAverage)
             Text(
                 text = buildAnnotatedString {
-                    append((movie.vote_average * 10).toInt().toString())
+                    append((movie.voteAverage * 10).toInt().toString())
                     withStyle(
                         style = SpanStyle(
                             baselineShift = BaselineShift.Superscript,
@@ -116,7 +117,7 @@ fun PopularMovie(
                 .padding(start = 16.dp)
         )
         Text(
-            text = "1994-09-23",
+            text = movie.releaseDate,
             fontWeight = FontWeight.Light,
             fontFamily = robotoFontFamily,
             fontSize = 12.sp,

@@ -3,7 +3,8 @@ package com.naol.moviemania.presentation.home.nowplaying
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naol.moviemania.data.NetworkResult
-import com.naol.moviemania.data.model.NowPlaying
+import com.naol.moviemania.domain.mapper.toNowPlayingMovie
+import com.naol.moviemania.domain.model.NowPlayingMovie
 import com.naol.moviemania.domain.usecase.GetNowPlayingMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +13,7 @@ import kotlinx.coroutines.launch
 class NowPlayingViewModel(private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase) :
     ViewModel() {
     private val _ldNowPlayingMovies =
-        MutableStateFlow<List<NowPlaying>>(emptyList())
+        MutableStateFlow<List<NowPlayingMovie>>(emptyList())
     val ldNowPlayingMovies = _ldNowPlayingMovies.asStateFlow()
 
     init {
@@ -21,7 +22,7 @@ class NowPlayingViewModel(private val getNowPlayingMoviesUseCase: GetNowPlayingM
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data.results.let {
-                            _ldNowPlayingMovies.emit(it)
+                            _ldNowPlayingMovies.emit(it.map { movies -> movies.toNowPlayingMovie() })
                         }
                     }
 

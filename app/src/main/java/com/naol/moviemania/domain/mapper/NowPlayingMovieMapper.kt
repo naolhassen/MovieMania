@@ -1,19 +1,18 @@
 package com.naol.moviemania.domain.mapper
 
-import com.naol.moviemania.domain.model.NowPlaying
+import com.naol.moviemania.data.model.NowPlaying
+import com.naol.moviemania.domain.model.NowPlayingMovie
 import com.naol.moviemania.domain.util.toDate
 
-class NowPlayingMovieMapper {
-    fun map(nowPlayingMovie: com.naol.moviemania.data.model.NowPlaying): NowPlaying {
-        return NowPlaying(
-            id = nowPlayingMovie.id,
-            title = nowPlayingMovie.title,
-            overview = nowPlayingMovie.overview,
-            posterPath = nowPlayingMovie.poster_path,
-            releaseDate = nowPlayingMovie.release_date.toDate(),
-            voteAverage = nowPlayingMovie.vote_average,
-            backdropPath = nowPlayingMovie.backdrop_path,
-            popularity = nowPlayingMovie.popularity
-        )
-    }
+fun NowPlaying.toNowPlayingMovie(): NowPlayingMovie {
+    return NowPlayingMovie(
+        id = this.id,
+        title = this.title,
+        overview = this.overview,
+        posterPath = this.poster_path,
+        releaseDate = this.release_date.toDate(),
+        voteAverage = this.vote_average,
+        backdropPath = this.backdrop_path,
+        popularity = this.popularity
+    )
 }
