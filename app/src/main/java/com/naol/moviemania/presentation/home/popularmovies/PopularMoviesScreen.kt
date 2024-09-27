@@ -9,15 +9,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.naol.moviemania.presentation.home.components.MovieListItem
-import com.naol.moviemania.presentation.home.nowplaying.NowPlayingViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PopularMoviesScreen(
     modifier: Modifier = Modifier,
-    viewModel: NowPlayingViewModel = koinViewModel()
+    viewModel: PopularMoviesViewModel = koinViewModel()
 ) {
-    val movies = viewModel.ldNowPlayingMovies.collectAsState().value
+    val movies = viewModel.ldPopularMovies.collectAsState().value
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier

@@ -2,9 +2,11 @@ package com.naol.moviemania.presentation.home.nowplaying
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -42,7 +44,13 @@ fun NowPlayingScreen(
     val pagerState = rememberPagerState(pageCount = {
         movies.size
     })
-    HorizontalPager(state = pagerState) { page ->
+    HorizontalPager(
+        state = pagerState,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp),
+    ) { page ->
         NowPlaying(nowPlaying = movies[page])
     }
 }
@@ -55,8 +63,7 @@ fun NowPlaying(
 
     Box(
         modifier = Modifier
-            .height(240.dp)
-            .fillMaxWidth()
+            .offset(x = (-16).dp)
     ) {
         AsyncImage(
             model = imagePath,

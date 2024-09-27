@@ -1,38 +1,35 @@
-package com.naol.moviemania.presentation.home.nowplaying
+package com.naol.moviemania.presentation.home.upcomingmovies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naol.moviemania.data.NetworkResult
 import com.naol.moviemania.domain.mapper.toMovie
 import com.naol.moviemania.domain.model.Movie
-import com.naol.moviemania.domain.usecase.GetNowPlayingMoviesUseCase
+import com.naol.moviemania.domain.usecase.GetUpcomingMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class NowPlayingViewModel(private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase) :
+class UpcomingMoviesViewModel(private val getUpcomingMoviesUseCase: GetUpcomingMoviesUseCase) :
     ViewModel() {
-    private val _ldNowPlayingMovies =
-        MutableStateFlow<List<Movie>>(emptyList())
-    val ldNowPlayingMovies = _ldNowPlayingMovies.asStateFlow()
+    private var _ldUpcomingMovies = MutableStateFlow<List<Movie>>(emptyList())
+    val ldUpcomingMovies = _ldUpcomingMovies.asStateFlow()
 
     init {
         viewModelScope.launch {
-            getNowPlayingMoviesUseCase.execute().collect { result ->
+            getUpcomingMoviesUseCase.execute().collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data.results.let {
-                            _ldNowPlayingMovies.emit(it.map { movies -> movies.toMovie() })
+                            _ldUpcomingMovies.emit(it.map { apiMovie -> apiMovie.toMovie() })
                         }
                     }
 
                     is NetworkResult.Error -> {
-                        _ldNowPlayingMovies.emit(emptyList())
+                        _ldUpcomingMovies.emit(emptyList())
                     }
 
-                    NetworkResult.Loading -> {
-
-                    }
+                    is NetworkResult.Loading -> {}
                 }
             }
         }

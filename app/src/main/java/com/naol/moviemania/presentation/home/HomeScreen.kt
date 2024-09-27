@@ -23,7 +23,6 @@ import com.naol.moviemania.ui.theme.robotoFontFamily
 fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
-    NowPlayingScreen(modifier = modifier)
     LazyColumn(modifier = modifier) {
         item { NowPlayingScreen(modifier = modifier) }
         item { SectionTitle(title = "Popular Movies", modifier = Modifier.padding(16.dp)) }

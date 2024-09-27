@@ -4,7 +4,7 @@ import com.naol.moviemania.data.model.ApiMovie
 import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.domain.util.toDate
 
-fun ApiMovie.toNowPlayingMovie(): Movie {
+fun ApiMovie.toMovie(): Movie {
     return Movie(
         id = this.id,
         title = this.title,
