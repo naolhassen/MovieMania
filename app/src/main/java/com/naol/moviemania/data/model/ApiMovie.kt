@@ -1,5 +1,6 @@
 package com.naol.moviemania.data.model
 
+
 data class ApiMovie(
     val adult: Boolean,
     val backdrop_path: String,
@@ -16,3 +17,4 @@ data class ApiMovie(
     val vote_average: Double,
     val vote_count: Int
 )
+

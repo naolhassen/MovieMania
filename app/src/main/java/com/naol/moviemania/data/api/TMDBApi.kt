@@ -13,24 +13,11 @@ interface TMDBApi {
         const val IMAGE_URL = "https://image.tmdb.org/t/p/original"
     }
 
-    @GET("movie/now_playing")
-    suspend fun getNowPlayingMovies(): MovieResponse
-
-    @GET("movie/upcoming")
-    suspend fun getUpcomingMovies(): MovieResponse
-
-    @GET("movie/popular")
-    suspend fun getPopularMovies(): MovieResponse
-
-    @GET("movie/top_rated")
-    suspend fun getTopRatedMovies(): MovieResponse
-
     @GET("movie/{category}")
-    suspend fun getMoviesByCategory(
+    suspend fun getMovies(
         @Path("category") category: String,
         @Query("page") page: Int
     ): MovieResponse
-
 }
 
 class ApiKeyInterceptor(private val apiKey: String) : Interceptor {

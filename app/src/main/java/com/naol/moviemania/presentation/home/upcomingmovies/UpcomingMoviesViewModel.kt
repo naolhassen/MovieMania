@@ -21,7 +21,7 @@ class UpcomingMoviesViewModel(private val getUpcomingMoviesUseCase: GetUpcomingM
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data.results.let {
-                            _ldUpcomingMovies.emit(it.map { apiMovie -> apiMovie.toMovie() })
+                            _ldUpcomingMovies.emit(it.map { apiMovie -> apiMovie.toMovie() } as List<Movie>)
                         }
                     }
 

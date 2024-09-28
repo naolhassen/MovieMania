@@ -24,7 +24,7 @@ class NowPlayingViewModel(private val getNowPlayingMoviesUseCase: GetNowPlayingM
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data.results.let {
-                            val movies = it.map { movies -> movies.toMovie() }
+                            val movies = it.map { movies -> movies.toMovie() } as List<Movie>
                             _ldNowPlayingMovies.emit(NetworkResult.Success(movies))
                         }
                     }

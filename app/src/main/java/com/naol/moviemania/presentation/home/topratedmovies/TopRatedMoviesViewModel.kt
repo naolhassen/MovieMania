@@ -21,7 +21,7 @@ class TopRatedMoviesViewModel(private val getTopRatedMoviesUseCase: GetTopRatedM
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data.results.let {
-                            _ldTopRatedMovies.emit(it.map { apiMovie -> apiMovie.toMovie() })
+                            _ldTopRatedMovies.emit(it.map { apiMovie -> apiMovie.toMovie() } as List<Movie>)
                         }
                         }
 

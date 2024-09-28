@@ -28,15 +28,16 @@ data class MovieDetailScreen(
 )
 
 @Serializable
-data class MovieByCategoryRoute(
+data class MovieByCatalogRoute(
     val title: String,
     val route: String
 )
 
-enum class MovieCategory(val title: String, val route: String) {
-    POPULAR("Popular", "/popular"),
-    TOP_RATED("Top Rated", "/top_rated"),
-    UPCOMING("Upcoming", "/upcoming")
+enum class MovieCatalog(val title: String, val route: String) {
+    NOW_PLAYING("Now Playing", "now_playing"),
+    POPULAR("Popular", "popular"),
+    TOP_RATED("Top Rated", "top_rated"),
+    UPCOMING("Upcoming", "upcoming")
 }
 
 @Composable
@@ -46,24 +47,25 @@ fun HomeScreen(
 ) {
     LazyColumn(modifier = modifier) {
         item { NowPlayingScreen(modifier = modifier) }
-        for (category in MovieCategory.entries) {
+        for (category in MovieCatalog.entries) {
             item {
                 SectionTitle(category,
                     onClick = {
-                        navController.navigate(MovieByCategoryRoute(category.title, category.route))
+                        navController.navigate(MovieByCatalogRoute(category.title, category.route))
                     })
             }
             when (category) {
-                MovieCategory.POPULAR -> item { PopularMoviesScreen() }
-                MovieCategory.TOP_RATED -> item { TopRatedMoviesScreen() }
-                MovieCategory.UPCOMING -> item { UpcomingMoviesScreen() }
+                MovieCatalog.NOW_PLAYING -> {}
+                MovieCatalog.POPULAR -> item { PopularMoviesScreen() }
+                MovieCatalog.TOP_RATED -> item { TopRatedMoviesScreen() }
+                MovieCatalog.UPCOMING -> item { UpcomingMoviesScreen() }
             }
         }
     }
 }
 
 @Composable
-fun SectionTitle(category: MovieCategory, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun SectionTitle(category: MovieCatalog, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier

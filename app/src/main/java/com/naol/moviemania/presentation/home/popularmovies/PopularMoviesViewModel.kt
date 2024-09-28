@@ -22,7 +22,7 @@ class PopularMoviesViewModel(private val getPopularMoviesUseCase: GetPopularMovi
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data.results.let {
-                            _ldPopularMovies.emit(it.map { movies -> movies.toMovie() })
+                            _ldPopularMovies.emit(it.map { movies -> movies.toMovie() } as List<Movie>)
                         }
                     }
 

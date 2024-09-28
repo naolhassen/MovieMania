@@ -39,7 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.naol.moviemania.data.model.bottomNavItems
 import com.naol.moviemania.presentation.home.HomeScreen
-import com.naol.moviemania.presentation.home.MovieByCategoryRoute
+import com.naol.moviemania.presentation.home.MovieByCatalogRoute
 import com.naol.moviemania.presentation.home.allmovies.AllMoviesScreen
 import com.naol.moviemania.ui.theme.MovieManiaTheme
 import com.naol.moviemania.ui.theme.Pink
@@ -118,8 +118,8 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
                 }
             }
 
-            composable<MovieByCategoryRoute> {
-                val args = it.toRoute<MovieByCategoryRoute>()
+            composable<MovieByCatalogRoute> {
+                val args = it.toRoute<MovieByCatalogRoute>()
                 AllMoviesScreen(args.title, args.route)
             }
         }
