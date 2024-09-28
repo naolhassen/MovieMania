@@ -6,8 +6,8 @@ import com.naol.moviemania.domain.repository.MovieManiaRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class GetMoviesByCategoryUseCase(private val repository: MovieManiaRepository) {
-    fun execute(category: String, page: Int): Flow<NetworkResult<MovieResponse>> = flow {
-        emit(repository.getMovies(category, page))
+class GetMoviesUseCase(private val repository: MovieManiaRepository) {
+    fun execute(catalog: String, page: Int = 1): Flow<NetworkResult<MovieResponse>> = flow {
+        emit(repository.getMovies(catalog,page))
     }
 }

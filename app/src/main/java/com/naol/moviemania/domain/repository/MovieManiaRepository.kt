@@ -4,5 +4,5 @@ import com.naol.moviemania.data.api.model.MovieResponse
 import com.naol.moviemania.data.NetworkResult
 
 interface MovieManiaRepository {
-    suspend fun getMovies(category: String, page: Int = 1): NetworkResult<MovieResponse>
+    suspend fun getMovies(category: String, page: Int): NetworkResult<MovieResponse>
 }

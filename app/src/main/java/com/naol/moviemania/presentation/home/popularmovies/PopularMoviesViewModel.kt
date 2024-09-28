@@ -5,12 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.naol.moviemania.data.NetworkResult
 import com.naol.moviemania.domain.mapper.toMovie
 import com.naol.moviemania.domain.model.Movie
-import com.naol.moviemania.domain.usecase.GetPopularMoviesUseCase
+import com.naol.moviemania.domain.usecase.GetMoviesUseCase
+import com.naol.moviemania.presentation.home.MovieCatalog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class PopularMoviesViewModel(private val getPopularMoviesUseCase: GetPopularMoviesUseCase) :
+class PopularMoviesViewModel(private val getMoviesUseCase: GetMoviesUseCase) :
     ViewModel() {
 
     private var _ldPopularMovies = MutableStateFlow<List<Movie>>(emptyList())
@@ -18,7 +19,7 @@ class PopularMoviesViewModel(private val getPopularMoviesUseCase: GetPopularMovi
 
     init {
         viewModelScope.launch {
-            getPopularMoviesUseCase.execute().collect { result ->
+            getMoviesUseCase.execute(MovieCatalog.POPULAR.route).collect { result ->
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data.results.let {
