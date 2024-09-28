@@ -6,13 +6,15 @@ import com.naol.moviemania.domain.util.toDate
 
 fun ApiMovie.toMovie(): Movie {
     return Movie(
-        id = id?: 0,
+        id = id,
         title = title,
-        overview = overview ?: "No overview available",
+        overview = overview,
         posterPath = poster_path,
         releaseDate = release_date.toDate(),
-        voteAverage = vote_average ?: 0.0,
-        popularity = popularity ?: 0.0,
-        backdropPath = backdrop_path ?: ""
+        voteAverage = vote_average,
+        popularity = popularity,
+        backdropPath = backdrop_path ?: "",
     )
 }
+
+
