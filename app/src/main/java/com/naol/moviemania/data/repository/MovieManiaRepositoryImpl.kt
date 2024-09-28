@@ -37,4 +37,15 @@ class MovieManiaRepositoryImpl(private val api: TMDBApi) : MovieManiaRepository 
             NetworkResult.Error(e.message ?: "Unknown error")
         }
     }
+
+    override suspend fun getMoviesByCategory(
+        category: String,
+        page: Int
+    ): NetworkResult<MovieResponse> {
+        return try {
+            NetworkResult.Success(api.getMoviesByCategory(category, page))
+        } catch (e: Exception) {
+            NetworkResult.Error(e.message ?: "Unknown error")
+        }
+    }
 }

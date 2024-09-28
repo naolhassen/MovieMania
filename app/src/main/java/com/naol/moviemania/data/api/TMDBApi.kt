@@ -3,6 +3,8 @@ package com.naol.moviemania.data.api
 import com.naol.moviemania.data.api.model.MovieResponse
 import okhttp3.Interceptor
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TMDBApi {
 
@@ -22,6 +24,12 @@ interface TMDBApi {
 
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(): MovieResponse
+
+    @GET("movie/{category}")
+    suspend fun getMoviesByCategory(
+        @Path("category") category: String,
+        @Query("page") page: Int
+    ): MovieResponse
 
 }
 

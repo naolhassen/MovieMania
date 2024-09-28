@@ -12,4 +12,6 @@ interface MovieManiaRepository {
 
     suspend fun getTopRatedMovies(): NetworkResult<MovieResponse>
 
+    suspend fun getMoviesByCategory(category: String, page: Int): NetworkResult<MovieResponse>
+
 }
