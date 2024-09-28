@@ -40,6 +40,7 @@ import androidx.navigation.toRoute
 import com.naol.moviemania.data.model.bottomNavItems
 import com.naol.moviemania.presentation.home.HomeScreen
 import com.naol.moviemania.presentation.home.MovieByCategoryRoute
+import com.naol.moviemania.presentation.home.allmovies.AllMoviesScreen
 import com.naol.moviemania.ui.theme.MovieManiaTheme
 import com.naol.moviemania.ui.theme.Pink
 import com.naol.moviemania.ui.theme.Pink41
@@ -111,7 +112,6 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
                         modifier = Modifier
                             .padding(innerPadding)
                     )
-
                     "search" -> SearchScreen()
                     "profile" -> ProfileScreen()
                     "favorite" -> FavoriteScreen("")
@@ -120,7 +120,7 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
 
             composable<MovieByCategoryRoute> {
                 val args = it.toRoute<MovieByCategoryRoute>()
-                FavoriteScreen(args.category)
+                AllMoviesScreen(args.title, args.route)
             }
         }
     }

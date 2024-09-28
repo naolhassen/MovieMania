@@ -24,12 +24,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieDetailScreen(
-    val id: String
+    val id: Int
 )
 
 @Serializable
 data class MovieByCategoryRoute(
-    val category: String
+    val title: String,
+    val route: String
 )
 
 enum class MovieCategory(val title: String, val route: String) {
@@ -49,7 +50,7 @@ fun HomeScreen(
             item {
                 SectionTitle(category,
                     onClick = {
-                        navController.navigate(MovieByCategoryRoute(category.route))
+                        navController.navigate(MovieByCategoryRoute(category.title, category.route))
                     })
             }
             when (category) {
