@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -34,8 +36,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.naol.moviemania.data.model.bottomNavItems
 import com.naol.moviemania.presentation.home.HomeScreen
+import com.naol.moviemania.presentation.home.MovieByCategoryRoute
 import com.naol.moviemania.ui.theme.MovieManiaTheme
 import com.naol.moviemania.ui.theme.Pink
 import com.naol.moviemania.ui.theme.Pink41
@@ -68,9 +72,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         modifier.background(Color.Transparent)
-        TopAppBar(title = {
-            AppName()
-        })
+        TopAppBar(title = { AppName() })
     }, bottomBar = {
         NavigationBar {
             bottomNavItems.forEachIndexed { index, item ->
@@ -104,21 +106,38 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
         bottomNavItems.forEach { item ->
             composable(item.route) {
                 when (item.route) {
-                    "home" -> HomeScreen(modifier = Modifier.padding(innerPadding))
+                    "home" -> HomeScreen(
+                        navController = navController,
+                        modifier = Modifier
+                            .padding(innerPadding)
+                    )
+
                     "search" -> SearchScreen()
                     "profile" -> ProfileScreen()
-                    "favorite" -> FavoriteScreen()
+                    "favorite" -> FavoriteScreen("")
                 }
+            }
+
+            composable<MovieByCategoryRoute> {
+                val args = it.toRoute<MovieByCategoryRoute>()
+                FavoriteScreen(args.category)
             }
         }
     }
 }
 
 @Composable
-fun FavoriteScreen() {
-    Text(
-        text = "FavoriteScreen ", color = PrimaryColor
-    )
+fun FavoriteScreen(category: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Text(
+            text = "$category Screen ", color = PrimaryColor,
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+    }
 }
 
 @Composable
@@ -168,6 +187,7 @@ fun AppName(
         modifier = modifier.background(Color.Transparent),
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable

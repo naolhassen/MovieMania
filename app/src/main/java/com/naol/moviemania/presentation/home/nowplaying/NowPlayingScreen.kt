@@ -18,7 +18,9 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,12 +29,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.naol.moviemania.data.NetworkResult
 import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.NeutralColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
+import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+
 
 
 @Composable
@@ -40,19 +45,30 @@ fun NowPlayingScreen(
     modifier: Modifier = Modifier,
     viewModel: NowPlayingViewModel = koinViewModel(),
 ) {
-    val movies = viewModel.ldNowPlayingMovies.collectAsState().value
-    val pagerState = rememberPagerState(pageCount = {
-        movies.size
-    })
-    HorizontalPager(
-        state = pagerState,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 8.dp),
-        contentPadding = PaddingValues(horizontal = 4.dp),
-    ) { page ->
-        NowPlaying(nowPlaying = movies[page])
+    val viewState by viewModel.ldNowPlayingMovies.collectAsState()
+    LaunchedEffect(key1 = viewModel, block = { viewModel.fetchInitialData() })
+    when (val state = viewState) {
+        is NetworkResult.Success -> {
+            val pagerState = rememberPagerState(pageCount = {
+                state.data.size
+            })
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp),
+                contentPadding = PaddingValues(horizontal = 4.dp),
+            ) { page ->
+                NowPlaying(nowPlaying = state.data[page])
+            }
+        }
+
+        is NetworkResult.Error -> {}
+        NetworkResult.Loading -> {
+
+        }
     }
+
 }
 
 @Composable

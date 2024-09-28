@@ -13,21 +13,24 @@ import kotlinx.coroutines.launch
 class NowPlayingViewModel(private val getNowPlayingMoviesUseCase: GetNowPlayingMoviesUseCase) :
     ViewModel() {
     private val _ldNowPlayingMovies =
-        MutableStateFlow<List<Movie>>(emptyList())
+        MutableStateFlow<NetworkResult<List<Movie>>>(NetworkResult.Loading)
     val ldNowPlayingMovies = _ldNowPlayingMovies.asStateFlow()
 
-    init {
+
+    fun fetchInitialData() {
         viewModelScope.launch {
             getNowPlayingMoviesUseCase.execute().collect { result ->
+
                 when (result) {
                     is NetworkResult.Success -> {
                         result.data.results.let {
-                            _ldNowPlayingMovies.emit(it.map { movies -> movies.toMovie() })
+                            val movies = it.map { movies -> movies.toMovie() }
+                            _ldNowPlayingMovies.emit(NetworkResult.Success(movies))
                         }
                     }
 
                     is NetworkResult.Error -> {
-                        _ldNowPlayingMovies.emit(emptyList())
+                        _ldNowPlayingMovies.emit(NetworkResult.Error(result.message))
                     }
 
                     NetworkResult.Loading -> {
