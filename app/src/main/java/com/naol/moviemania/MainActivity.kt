@@ -39,7 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.naol.moviemania.data.model.bottomNavItems
 import com.naol.moviemania.presentation.home.HomeScreen
-import com.naol.moviemania.presentation.home.MovieByCatalogRoute
+import com.naol.moviemania.presentation.home.MovieCategoryRoute
 import com.naol.moviemania.presentation.home.allmovies.AllMoviesScreen
 import com.naol.moviemania.ui.theme.MovieManiaTheme
 import com.naol.moviemania.ui.theme.Pink
@@ -118,8 +118,8 @@ fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
                 }
             }
 
-            composable<MovieByCatalogRoute> {
-                val args = it.toRoute<MovieByCatalogRoute>()
+            composable<MovieCategoryRoute> {
+                val args = it.toRoute<MovieCategoryRoute>()
                 AllMoviesScreen(args.title, args.route)
             }
         }
@@ -163,24 +163,24 @@ fun AppName(
         text = buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
-                    color = Pink41, fontSize = 20.sp, fontWeight = FontWeight.Bold
+                    color = Pink41, fontSize = 32.sp, fontWeight = FontWeight.Bold
                 )
             ) {
                 append("M")
             }
-            withStyle(style = SpanStyle(color = Pink)) {
-                append("ovie")
-            }
+//            withStyle(style = SpanStyle(color = Pink)) {
+//                append("ovie")
+//            }
             withStyle(
                 style = SpanStyle(
-                    color = Purple40, fontSize = 20.sp, fontWeight = FontWeight.Bold
+                    color = Pink, fontSize = 32.sp, fontWeight = FontWeight.Bold
                 )
             ) {
                 append("M")
             }
-            withStyle(style = SpanStyle(color = Pink81)) {
-                append("ania")
-            }
+//            withStyle(style = SpanStyle(color = Pink81)) {
+//                append("ania")
+//            }
         },
         color = SecondaryColor,
         fontFamily = robotoFontFamily,

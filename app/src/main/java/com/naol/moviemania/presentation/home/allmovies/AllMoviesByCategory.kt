@@ -2,6 +2,7 @@ package com.naol.moviemania.presentation.home.allmovies
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -52,7 +53,8 @@ fun AllMoviesScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                columns = GridCells.Fixed(2)
+                columns = GridCells.Fixed(2),
+                modifier = modifier.padding(top = 80.dp)
             ) {
                 items(state.data) { movie ->
                     MovieListItem(movie)

@@ -28,7 +28,7 @@ data class MovieDetailScreen(
 )
 
 @Serializable
-data class MovieByCatalogRoute(
+data class MovieCategoryRoute(
     val title: String,
     val route: String
 )
@@ -46,16 +46,22 @@ fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {
-        item { NowPlayingScreen(modifier = modifier) }
         for (category in MovieCatalog.entries) {
-            item {
-                SectionTitle(category,
-                    onClick = {
-                        navController.navigate(MovieByCatalogRoute(category.title, category.route))
-                    })
+            if (category != MovieCatalog.NOW_PLAYING) {
+                item {
+                    SectionTitle(category,
+                        onClick = {
+                            navController.navigate(
+                                MovieCategoryRoute(
+                                    category.title,
+                                    category.route
+                                )
+                            )
+                        })
+                }
             }
             when (category) {
-                MovieCatalog.NOW_PLAYING -> {}
+                MovieCatalog.NOW_PLAYING -> item { NowPlayingScreen() }
                 MovieCatalog.POPULAR -> item { PopularMoviesScreen() }
                 MovieCatalog.TOP_RATED -> item { TopRatedMoviesScreen() }
                 MovieCatalog.UPCOMING -> item { UpcomingMoviesScreen() }
