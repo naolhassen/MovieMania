@@ -5,4 +5,6 @@ import com.naol.moviemania.data.NetworkResult
 
 interface MovieManiaRepository {
     suspend fun getMovies(category: String, page: Int): NetworkResult<MovieResponse>
+
+    suspend fun searchMovies(query: String, page: Int): NetworkResult<MovieResponse>
 }

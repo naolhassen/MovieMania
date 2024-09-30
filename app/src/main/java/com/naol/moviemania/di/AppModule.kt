@@ -8,11 +8,13 @@ import com.naol.moviemania.data.api.TMDBApi.Companion.BASE_URL
 import com.naol.moviemania.data.repository.MovieManiaRepositoryImpl
 import com.naol.moviemania.domain.repository.MovieManiaRepository
 import com.naol.moviemania.domain.usecase.GetMoviesUseCase
+import com.naol.moviemania.domain.usecase.SearchMoviesUseCase
 import com.naol.moviemania.presentation.home.allmovies.AllMoviesViewModel
 import com.naol.moviemania.presentation.home.nowplaying.NowPlayingViewModel
 import com.naol.moviemania.presentation.home.popularmovies.PopularMoviesViewModel
 import com.naol.moviemania.presentation.home.topratedmovies.TopRatedMoviesViewModel
 import com.naol.moviemania.presentation.home.upcomingmovies.UpcomingMoviesViewModel
+import com.naol.moviemania.presentation.searchmovie.SearchMoviesViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.dsl.viewModel
@@ -54,6 +56,10 @@ val appModule = module {
         GetMoviesUseCase(get(named("remote")))
     }
 
+    single {
+        SearchMoviesUseCase(get(named("remote")))
+    }
+
     viewModel {
         PopularMoviesViewModel(get())
     }
@@ -68,6 +74,10 @@ val appModule = module {
     }
     viewModel {
         AllMoviesViewModel(get())
+    }
+
+    viewModel {
+        SearchMoviesViewModel(get())
     }
 }
 

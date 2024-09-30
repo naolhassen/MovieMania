@@ -18,6 +18,12 @@ interface TMDBApi {
         @Path("category") category: String,
         @Query("page") page: Int
     ): MovieResponse
+
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("query") query: String,
+        @Query("page") page: Int
+    ): MovieResponse
 }
 
 class ApiKeyInterceptor(private val apiKey: String) : Interceptor {

@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,7 +22,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,10 +40,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.naol.moviemania.data.model.BottomNavItem
 import com.naol.moviemania.data.model.bottomNavItems
 import com.naol.moviemania.presentation.home.HomeScreen
 import com.naol.moviemania.presentation.home.MovieCategoryRoute
 import com.naol.moviemania.presentation.home.allmovies.AllMoviesScreen
+import com.naol.moviemania.presentation.searchmovie.SearchMoviesScreen
 import com.naol.moviemania.ui.theme.MovieManiaTheme
 import com.naol.moviemania.ui.theme.Pink
 import com.naol.moviemania.ui.theme.Pink41
@@ -69,23 +74,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    var selectedIndex by remember { mutableIntStateOf(0) }
+    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        modifier.background(Color.Transparent)
         TopAppBar(title = { AppName() })
+
     }, bottomBar = {
         NavigationBar {
             bottomNavItems.forEachIndexed { index, item ->
                 NavigationBarItem(selected = index == selectedIndex, onClick = {
-                    if (navController.currentDestination?.route != item.route) {
-                        selectedIndex = index
-                        navController.navigate(item.route) {
-                            popUpTo(navController.graph.startDestinationId)
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
+                    navigateToDestination(navController, item.route)
+                    selectedIndex = index
                 }, icon = {
                     Icon(
                         imageVector = if (index == selectedIndex) item.selectedIcon else item.unselectedIcon,
@@ -96,25 +95,42 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
         }
     }) { innerPadding ->
-        Navigation(navController, innerPadding)
+        Navigation(navController, Modifier.navigationBarsPadding().padding(innerPadding) )
+    }
+}
+
+
+private fun navigateToDestination(
+    navController: NavHostController,
+    route: String
+) {
+    if (navController.currentDestination?.route != route) {
+        navController.navigate(route) {
+            popUpTo(navController.graph.startDestinationId)
+            launchSingleTop = true
+            restoreState = true
+        }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Navigation(navController: NavHostController, innerPadding: PaddingValues) {
+fun Navigation(navController: NavHostController, modifier: Modifier) {
     NavHost(navController, startDestination = bottomNavItems[0].route) {
         bottomNavItems.forEach { item ->
             composable(item.route) {
                 when (item.route) {
                     "home" -> HomeScreen(
                         navController = navController,
-                        modifier = Modifier
-                            .padding(innerPadding)
+                        modifier = modifier
                     )
-                    "search" -> SearchScreen()
-                    "profile" -> ProfileScreen()
+
+                    "search" -> SearchMoviesScreen(
+                        modifier = modifier
+                    )
+
                     "favorite" -> FavoriteScreen("")
+                    "profile" -> ProfileScreen()
                 }
             }
 
@@ -144,13 +160,6 @@ fun FavoriteScreen(category: String) {
 fun ProfileScreen() {
     Text(
         text = "ProfileScreen ", color = PrimaryColor
-    )
-}
-
-@Composable
-fun SearchScreen() {
-    Text(
-        text = "SearchScreen ", color = PrimaryColor
     )
 }
 
