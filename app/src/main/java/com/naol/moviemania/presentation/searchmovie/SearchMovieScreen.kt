@@ -3,6 +3,7 @@ package com.naol.moviemania.presentation.searchmovie
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,10 +15,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,19 +37,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.naol.moviemania.R
 import com.naol.moviemania.data.NetworkResult
 import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.data.model.ApiMovie
 import com.naol.moviemania.domain.util.toDate
 import com.naol.moviemania.presentation.home.components.RatingIndicator
 import com.naol.moviemania.ui.theme.AccentColor
+import com.naol.moviemania.ui.theme.PrimaryColor
+import com.naol.moviemania.ui.theme.robotoFontFamily
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,7 +84,7 @@ fun SearchMoviesScreen(
     }
 
     LaunchedEffect(key1 = loadMoreResults, block = {
-        if (query.isNotEmpty()) {
+        if (query.isNotEmpty() && searchResults is NetworkResult.Success) {
             viewModel.loadMoreResults(query)
         }
     })
@@ -89,7 +100,7 @@ fun SearchMoviesScreen(
                 active = it
             },
             placeholder = { Text("Search") },
-            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
             trailingIcon = {
                 if (active) {
                     IconButton(onClick = {
@@ -99,7 +110,7 @@ fun SearchMoviesScreen(
                             active = false
                         }
                     }) {
-                        Icon(Icons.Filled.Clear, contentDescription = null)
+                        Icon(Icons.Filled.Clear, contentDescription = "Clear Search")
                     }
                 }
             },
@@ -136,10 +147,9 @@ fun SearchResultItem(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
             .fillMaxWidth()
-            .height(120.dp)
+            .height(IntrinsicSize.Min)
             .padding(horizontal = 16.dp)
             .clickable { /* Handle click event */ }
-
     ) {
         val imageURL = IMAGE_URL + movie.poster_path
         AsyncImage(
@@ -147,29 +157,41 @@ fun SearchResultItem(
             contentDescription = movie.title,
             contentScale = ContentScale.Fit,
             modifier = Modifier
+                .fillMaxHeight()
                 .width(100.dp)
-                .padding(8.dp)
+                .clip(RoundedCornerShape(8.dp))
         )
-        Column(modifier = modifier.align(Alignment.CenterVertically)) {
+        Column(
+            modifier = modifier
+                .align(Alignment.CenterVertically)
+                .padding(vertical = 8.dp)
+                .padding(end = 8.dp)
+        ) {
             Text(
                 text = movie.title,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
+                fontFamily = robotoFontFamily,
+                fontWeight = FontWeight.Bold,
+                color = AccentColor,
             )
-            Text(text = movie.release_date)
+            Text(
+                text = movie.release_date,
+                fontWeight = FontWeight.Normal,
+                fontFamily = robotoFontFamily
+            )
             Text(
                 text = movie.overview,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.Light,
+                fontFamily = robotoFontFamily,
                 maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
-            StarRating(rating = movie.vote_average,
-                modifier = Modifier.align(Alignment.End))
-
+            StarRating(
+                rating = movie.vote_average / 2,
+                modifier = Modifier.align(Alignment.End)
+            )
         }
-
     }
-
 }
 
 @Composable
@@ -179,13 +201,17 @@ fun StarRating(rating: Double, modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(5) { index ->
+            val (icon, iconTint) = when {
+                index <= rating -> painterResource(id = R.drawable.round_star_filled) to AccentColor
+                index - rating < 1 -> painterResource(id = R.drawable.round_star_half) to AccentColor
+                else -> painterResource(id = R.drawable.round_star_border) to Color.LightGray
+            }
             Icon(
-                imageVector = Icons.Filled.Star,
+                painter = icon,
                 contentDescription = null,
-                tint = if (index+1 < rating) AccentColor else Color.Gray,
+                tint = iconTint,
                 modifier = Modifier.size(16.dp)
             )
         }
     }
-
 }
