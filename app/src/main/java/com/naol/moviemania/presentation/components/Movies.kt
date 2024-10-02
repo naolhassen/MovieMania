@@ -47,11 +47,9 @@ fun MovieListItem(
         modifier = Modifier
             .width(150.dp)
             .clip(RoundedCornerShape(size = 8.dp))
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(4.dp))
             .clickable { onClick() }
     )
     {
-
         val imagePath = IMAGE_URL + movie.posterPath
         AsyncImage(
             model = imagePath,
