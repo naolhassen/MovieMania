@@ -89,7 +89,7 @@ fun SearchMoviesScreen(
         }
     })
 
-    Column(modifier = Modifier.padding(top = 56.dp)) {
+    Column() {
         SearchBar(query = query, onQueryChange = {
             query = it
         }, onSearch = {

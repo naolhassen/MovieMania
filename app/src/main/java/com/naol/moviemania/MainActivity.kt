@@ -76,26 +76,30 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
-    Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        TopAppBar(title = { AppName() })
-
-    }, bottomBar = {
-        NavigationBar {
-            bottomNavItems.forEachIndexed { index, item ->
-                NavigationBarItem(selected = index == selectedIndex, onClick = {
-                    navigateToDestination(navController, item.route)
-                    selectedIndex = index
-                }, icon = {
-                    Icon(
-                        imageVector = if (index == selectedIndex) item.selectedIcon else item.unselectedIcon,
-                        contentDescription = item.title,
-                        tint = if (index == selectedIndex) PrimaryColor else Color.Unspecified,
-                    )
-                })
+    Scaffold(modifier = Modifier.fillMaxSize(),
+//        topBar = {
+//            TopAppBar(title = { AppName() })
+//        },
+        bottomBar = {
+            NavigationBar {
+                bottomNavItems.forEachIndexed { index, item ->
+                    NavigationBarItem(selected = index == selectedIndex, onClick = {
+                        navigateToDestination(navController, item.route)
+                        selectedIndex = index
+                    }, icon = {
+                        Icon(
+                            imageVector = if (index == selectedIndex) item.selectedIcon else item.unselectedIcon,
+                            contentDescription = item.title,
+                            tint = if (index == selectedIndex) PrimaryColor else Color.Unspecified,
+                        )
+                    })
+                }
             }
-        }
-    }) { innerPadding ->
-        Navigation(navController, Modifier.navigationBarsPadding().padding(innerPadding) )
+        }) { innerPadding ->
+        Navigation(navController,
+            Modifier
+                .navigationBarsPadding()
+                .padding(innerPadding))
     }
 }
 
@@ -116,18 +120,18 @@ private fun navigateToDestination(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(navController: NavHostController, modifier: Modifier) {
-    NavHost(navController, startDestination = bottomNavItems[0].route) {
+    NavHost(navController,
+        startDestination = bottomNavItems[0].route,
+        modifier = modifier
+    ) {
         bottomNavItems.forEach { item ->
             composable(item.route) {
                 when (item.route) {
                     "home" -> HomeScreen(
-                        navController = navController,
-                        modifier = modifier
+                        navController = navController
                     )
 
-                    "search" -> SearchMoviesScreen(
-                        modifier = modifier
-                    )
+                    "search" -> SearchMoviesScreen( )
 
                     "favorite" -> FavoriteScreen("")
                     "profile" -> ProfileScreen()

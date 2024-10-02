@@ -45,7 +45,7 @@ fun HomeScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn() {
         for (category in MovieCatalog.entries) {
             if (category != MovieCatalog.NOW_PLAYING) {
                 item {
