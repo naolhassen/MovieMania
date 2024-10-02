@@ -1,7 +1,7 @@
 package com.naol.moviemania.presentation.moviedetail
 
-import android.provider.MediaStore.Audio.Genres
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +25,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
+import com.naol.moviemania.data.model.Cast
+import com.naol.moviemania.data.model.CastsResponse
 import com.naol.moviemania.data.model.Genre
 import com.naol.moviemania.presentation.components.RatingIndicator
 import com.naol.moviemania.ui.theme.AccentColor
@@ -38,29 +45,35 @@ import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 import org.koin.androidx.compose.koinViewModel
 
+
 @Composable
 fun MovieDetailsScreen(
     id: Int, modifier: Modifier = Modifier,
     viewModel: MovieDetailsViewModel = koinViewModel()
 ) {
-    val uiState = viewModel.ldMovieDetails.collectAsState().value
+    val movieDetailState = viewModel.ldMovieDetails.collectAsState().value
+    val creditsState = viewModel.ldMovieCredits.collectAsState().value
+
     LaunchedEffect(key1 = true, block = {
         viewModel.getMovieDetails(id)
+        viewModel.getMovieCredits(id)
     })
 
-    when (uiState) {
+    when (movieDetailState) {
         is UiState.Success -> {
-            val movie = uiState.movieDetails
-            Column(
+            val movie = movieDetailState.data
+            LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = modifier
                     .fillMaxSize()
             ) {
-                Poster(movie.poster_path, movie.backdrop_path)
-                Header(movie.title, movie.release_date.substring(0, 4))
-                SecondaryHeader(movie.vote_average)
-                Genres(movie.genres, modifier = Modifier.align(Alignment.CenterHorizontally))
-                Overview(movie.overview, movie.tagline)
+                item { Poster(movie.poster_path, movie.backdrop_path) }
+                item { Header(movie.title, movie.release_date.substring(0, 4)) }
+                item { SecondaryHeader(movie.vote_average) }
+                item { Genres(movie.genres) }
+                item { Overview(movie.overview, movie.tagline) }
+                item { Spacer(modifier = Modifier.height(16.dp)) }
+                item { Credits(creditsState) }
             }
         }
 
@@ -79,7 +92,6 @@ fun Poster(
     backdropPath: String,
     modifier: Modifier = Modifier
 ) {
-
     Box {
         val posterUrl = IMAGE_URL + posterPath
         val backdropUrl = IMAGE_URL + backdropPath
@@ -100,7 +112,6 @@ fun Poster(
                 .padding(8.dp)
         )
     }
-
 }
 
 @Composable
@@ -108,10 +119,12 @@ fun Header(title: String, releaseYear: String, modifier: Modifier = Modifier) {
     Text(
         text = buildAnnotatedString {
             append(title)
-            withStyle(style = SpanStyle(
-                fontWeight = FontWeight.Light,
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Light,
 
-            )) {
+                    )
+            ) {
                 append(" (")
                 append(releaseYear)
                 append(")")
@@ -231,5 +244,59 @@ fun Overview(overview: String, tagline: String, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(16.dp)
         )
+    }
+}
+
+@Composable
+fun Credits(creditsState: UiState<CastsResponse>) {
+    when (creditsState) {
+        is UiState.Success -> {
+            val credits = creditsState.data
+            Text(
+                text = "Top Billed Cast",
+                color = AccentColor,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = robotoFontFamily,
+                modifier = Modifier.padding(16.dp)
+            )
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(16.dp)
+            ) {
+                items(credits.cast) {
+                    CreditItem(it)
+                }
+            }
+        }
+
+        is UiState.Error -> {}
+        UiState.Loading -> {}
+    }
+}
+
+@Composable
+fun CreditItem(cast: Cast, modifier: Modifier = Modifier) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        val imageUrl = IMAGE_URL + cast.profile_path
+        AsyncImage(
+            model = imageUrl,
+            contentScale = ContentScale.Crop,
+            contentDescription = cast.name,
+            modifier = Modifier
+                .size(100.dp)
+                .clip(CircleShape)
+                .border(2.dp, PrimaryColor, CircleShape)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = cast.name,
+            color = PrimaryColor,
+            fontWeight = FontWeight.Bold,
+            fontFamily = robotoFontFamily
+        )
+
     }
 }

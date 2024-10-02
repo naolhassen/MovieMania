@@ -7,6 +7,7 @@ import com.naol.moviemania.data.api.TMDBApi
 import com.naol.moviemania.data.api.TMDBApi.Companion.BASE_URL
 import com.naol.moviemania.data.repository.MovieManiaRepositoryImpl
 import com.naol.moviemania.domain.repository.MovieManiaRepository
+import com.naol.moviemania.domain.usecase.GetMovieCreditsUseCase
 import com.naol.moviemania.domain.usecase.GetMovieDetailsUseCase
 import com.naol.moviemania.domain.usecase.GetMoviesUseCase
 import com.naol.moviemania.domain.usecase.SearchMoviesUseCase
@@ -66,6 +67,10 @@ val appModule = module {
         GetMovieDetailsUseCase(get(named("remote")))
     }
 
+    single {
+        GetMovieCreditsUseCase(get(named("remote")))
+    }
+
     viewModel {
         PopularMoviesViewModel(get())
     }
@@ -87,7 +92,7 @@ val appModule = module {
     }
 
     viewModel {
-        MovieDetailsViewModel(get())
+        MovieDetailsViewModel(get(), get())
     }
 }
 

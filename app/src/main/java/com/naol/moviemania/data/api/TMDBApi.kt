@@ -2,6 +2,7 @@ package com.naol.moviemania.data.api
 
 import com.naol.moviemania.data.api.model.MovieResponse
 import com.naol.moviemania.data.model.ApiMovieDetails
+import com.naol.moviemania.data.model.CastsResponse
 import okhttp3.Interceptor
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -30,6 +31,11 @@ interface TMDBApi {
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int
     ): ApiMovieDetails
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int
+    ): CastsResponse
 }
 
 class ApiKeyInterceptor(private val apiKey: String) : Interceptor {
