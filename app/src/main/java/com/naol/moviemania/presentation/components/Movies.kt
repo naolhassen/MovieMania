@@ -1,7 +1,8 @@
-package com.naol.moviemania.presentation.home.components
+package com.naol.moviemania.presentation.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,13 +40,15 @@ import com.naol.moviemania.ui.theme.robotoFontFamily
 @Composable
 fun MovieListItem(
     movie: Movie,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
             .width(150.dp)
             .clip(RoundedCornerShape(size = 8.dp))
             .shadow(elevation = 4.dp, shape = RoundedCornerShape(4.dp))
+            .clickable { onClick() }
     )
     {
 

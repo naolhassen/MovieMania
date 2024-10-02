@@ -23,7 +23,7 @@ import com.naol.moviemania.ui.theme.robotoFontFamily
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieDetailScreen(
+data class MovieDetailScreenRoute(
     val id: Int
 )
 
@@ -61,10 +61,37 @@ fun HomeScreen(
                 }
             }
             when (category) {
-                MovieCatalog.NOW_PLAYING -> item { NowPlayingScreen() }
-                MovieCatalog.POPULAR -> item { PopularMoviesScreen() }
-                MovieCatalog.TOP_RATED -> item { TopRatedMoviesScreen() }
-                MovieCatalog.UPCOMING -> item { UpcomingMoviesScreen() }
+                MovieCatalog.NOW_PLAYING -> item {
+                    NowPlayingScreen(onMovieClick = {
+                        navController.navigate(
+                            MovieDetailScreenRoute(it)
+                        )
+                    })
+                }
+
+                MovieCatalog.POPULAR -> item {
+                    PopularMoviesScreen(onMovieClick = {
+                        navController.navigate(
+                            MovieDetailScreenRoute(it)
+                        )
+                    })
+                }
+
+                MovieCatalog.TOP_RATED -> item {
+                    TopRatedMoviesScreen(onMovieClick = {
+                        navController.navigate(
+                            MovieDetailScreenRoute(it)
+                        )
+                    })
+                }
+
+                MovieCatalog.UPCOMING -> item {
+                    UpcomingMoviesScreen(onMovieClick = {
+                        navController.navigate(
+                            MovieDetailScreenRoute(it)
+                        )
+                    })
+                }
             }
         }
     }

@@ -8,13 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.naol.moviemania.presentation.home.components.MovieListItem
+import com.naol.moviemania.presentation.components.MovieListItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun UpcomingMoviesScreen(
     modifier: Modifier = Modifier,
-    viewModel: UpcomingMoviesViewModel = koinViewModel()
+    viewModel: UpcomingMoviesViewModel = koinViewModel(),
+    onMovieClick: (Int) -> Unit = {}
 ) {
     val movies = viewModel.ldUpcomingMovies.collectAsState().value
 
@@ -24,7 +25,7 @@ fun UpcomingMoviesScreen(
             .padding(start = 8.dp, bottom = 8.dp)
     ) {
         items(movies) {
-            MovieListItem(movie = it)
+            MovieListItem(movie = it, onClick = { onMovieClick(it.id) })
         }
     }
 }

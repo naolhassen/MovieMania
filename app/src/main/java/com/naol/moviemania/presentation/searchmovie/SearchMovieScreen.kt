@@ -53,7 +53,7 @@ import com.naol.moviemania.data.NetworkResult
 import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.data.model.ApiMovie
 import com.naol.moviemania.domain.util.toDate
-import com.naol.moviemania.presentation.home.components.RatingIndicator
+import com.naol.moviemania.presentation.components.RatingIndicator
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily

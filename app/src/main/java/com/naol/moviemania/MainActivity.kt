@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -18,12 +17,9 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,18 +36,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.naol.moviemania.data.model.BottomNavItem
 import com.naol.moviemania.data.model.bottomNavItems
 import com.naol.moviemania.presentation.home.HomeScreen
 import com.naol.moviemania.presentation.home.MovieCategoryRoute
+import com.naol.moviemania.presentation.home.MovieDetailScreenRoute
 import com.naol.moviemania.presentation.home.allmovies.AllMoviesScreen
+import com.naol.moviemania.presentation.moviedetail.MovieDetailsScreen
 import com.naol.moviemania.presentation.searchmovie.SearchMoviesScreen
 import com.naol.moviemania.ui.theme.MovieManiaTheme
 import com.naol.moviemania.ui.theme.Pink
 import com.naol.moviemania.ui.theme.Pink41
-import com.naol.moviemania.ui.theme.Pink81
 import com.naol.moviemania.ui.theme.PrimaryColor
-import com.naol.moviemania.ui.theme.Purple40
 import com.naol.moviemania.ui.theme.SecondaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 
@@ -96,10 +91,12 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 }
             }
         }) { innerPadding ->
-        Navigation(navController,
+        Navigation(
+            navController,
             Modifier
                 .navigationBarsPadding()
-                .padding(innerPadding))
+                .padding(innerPadding)
+        )
     }
 }
 
@@ -120,7 +117,8 @@ private fun navigateToDestination(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(navController: NavHostController, modifier: Modifier) {
-    NavHost(navController,
+    NavHost(
+        navController,
         startDestination = bottomNavItems[0].route,
         modifier = modifier
     ) {
@@ -131,8 +129,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier) {
                         navController = navController
                     )
 
-                    "search" -> SearchMoviesScreen( )
-
+                    "search" -> SearchMoviesScreen()
                     "favorite" -> FavoriteScreen("")
                     "profile" -> ProfileScreen()
                 }
@@ -141,6 +138,11 @@ fun Navigation(navController: NavHostController, modifier: Modifier) {
             composable<MovieCategoryRoute> {
                 val args = it.toRoute<MovieCategoryRoute>()
                 AllMoviesScreen(args.title, args.route)
+            }
+
+            composable<MovieDetailScreenRoute> {
+                val args = it.toRoute<MovieDetailScreenRoute>()
+                MovieDetailsScreen(args.id)
             }
         }
     }

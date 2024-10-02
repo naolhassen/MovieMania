@@ -17,7 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.naol.moviemania.data.NetworkResult
-import com.naol.moviemania.presentation.home.components.MovieListItem
+import com.naol.moviemania.presentation.components.MovieListItem
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

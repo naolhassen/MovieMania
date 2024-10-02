@@ -1,5 +1,6 @@
 package com.naol.moviemania.presentation.home.nowplaying
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,11 +40,11 @@ import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
 
-
 @Composable
 fun NowPlayingScreen(
     modifier: Modifier = Modifier,
     viewModel: NowPlayingViewModel = koinViewModel(),
+    onMovieClick: (Int) -> Unit = {}
 ) {
     val viewState by viewModel.ldNowPlayingMovies.collectAsState()
     LaunchedEffect(key1 = viewModel, block = { viewModel.fetchInitialData() })
@@ -59,7 +60,9 @@ fun NowPlayingScreen(
                     .padding(start = 8.dp),
                 contentPadding = PaddingValues(horizontal = 4.dp),
             ) { page ->
-                NowPlaying(nowPlaying = state.data[page])
+                NowPlaying(
+                    nowPlaying = state.data[page],
+                    onClick = { onMovieClick(state.data[page].id) })
             }
         }
 
@@ -73,13 +76,14 @@ fun NowPlayingScreen(
 
 @Composable
 fun NowPlaying(
-    nowPlaying: Movie, modifier: Modifier = Modifier
+    nowPlaying: Movie, modifier: Modifier = Modifier, onClick: () -> Unit = {}
 ) {
     val imagePath = IMAGE_URL + nowPlaying.backdropPath
 
     Box(
         modifier = Modifier
             .offset(x = (-16).dp)
+            .clickable { onClick() }
     ) {
         AsyncImage(
             model = imagePath,
