@@ -38,11 +38,11 @@ val bottomNavItems = listOf(
         selectedIcon = Icons.Filled.Favorite,
         unselectedIcon = Icons.Outlined.FavoriteBorder
     ),
-    BottomNavItem(
-        title = "Profile",
-        route = "profile",
-        selectedIcon = Icons.Filled.Person,
-        unselectedIcon = Icons.Outlined.Person
-    )
+//    BottomNavItem(
+//        title = "Profile",
+//        route = "profile",
+//        selectedIcon = Icons.Filled.Person,
+//        unselectedIcon = Icons.Outlined.Person
+//    )
 
 )

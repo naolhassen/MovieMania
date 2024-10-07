@@ -16,14 +16,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.naol.moviemania.data.NetworkResult
 import com.naol.moviemania.presentation.components.MovieListItem
+import com.naol.moviemania.presentation.home.MovieDetailScreenRoute
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AllMoviesScreen(
     title: String,
     route: String,
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: AllMoviesViewModel = koinViewModel()
 ) {
@@ -35,7 +38,9 @@ fun AllMoviesScreen(
         derivedStateOf {
             val successState = viewState as? NetworkResult.Success ?: return@derivedStateOf false
             val totalItemCount = successState.data.size
-            val lastVisibleItemPosition = scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: return@derivedStateOf false
+            val lastVisibleItemPosition =
+                scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                    ?: return@derivedStateOf false
             lastVisibleItemPosition >= totalItemCount - 10
         }
     }
@@ -53,11 +58,14 @@ fun AllMoviesScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                columns = GridCells.Fixed(2),
-                modifier = modifier.padding(top = 80.dp)
+                columns = GridCells.Fixed(2)
             ) {
                 items(state.data) { movie ->
-                    MovieListItem(movie)
+                    MovieListItem(movie, onClick = {
+                        navController.navigate(
+                            MovieDetailScreenRoute(movie.id)
+                        )
+                    })
                 }
             }
 

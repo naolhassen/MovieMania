@@ -43,6 +43,7 @@ import com.naol.moviemania.presentation.home.MovieDetailScreenRoute
 import com.naol.moviemania.presentation.home.allmovies.AllMoviesScreen
 import com.naol.moviemania.presentation.moviedetail.MovieDetailsScreen
 import com.naol.moviemania.presentation.searchmovie.SearchMoviesScreen
+import com.naol.moviemania.ui.theme.LightColor
 import com.naol.moviemania.ui.theme.MovieManiaTheme
 import com.naol.moviemania.ui.theme.Pink
 import com.naol.moviemania.ui.theme.Pink41
@@ -85,9 +86,15 @@ fun MainScreen(modifier: Modifier = Modifier) {
                         Icon(
                             imageVector = if (index == selectedIndex) item.selectedIcon else item.unselectedIcon,
                             contentDescription = item.title,
-                            tint = if (index == selectedIndex) PrimaryColor else Color.Unspecified,
+                            tint = if (index == selectedIndex) PrimaryColor else LightColor,
                         )
-                    })
+                    }, label = {
+                        Text(
+                            text = item.title,
+                            color = if (index == selectedIndex) PrimaryColor else LightColor
+                        )
+                    }
+                    )
                 }
             }
         }) { innerPadding ->
@@ -129,7 +136,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier) {
                         navController = navController
                     )
 
-                    "search" -> SearchMoviesScreen()
+                    "search" -> SearchMoviesScreen(navController = navController)
                     "favorite" -> FavoriteScreen("")
                     "profile" -> ProfileScreen()
                 }
@@ -137,7 +144,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier) {
 
             composable<MovieCategoryRoute> {
                 val args = it.toRoute<MovieCategoryRoute>()
-                AllMoviesScreen(args.title, args.route)
+                AllMoviesScreen(args.title, args.route, navController)
             }
 
             composable<MovieDetailScreenRoute> {

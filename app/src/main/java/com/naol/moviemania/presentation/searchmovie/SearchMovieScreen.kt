@@ -1,16 +1,21 @@
 package com.naol.moviemania.presentation.searchmovie
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,6 +31,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,6 +53,7 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.naol.moviemania.R
 import com.naol.moviemania.data.NetworkResult
@@ -54,6 +61,7 @@ import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.data.model.ApiMovie
 import com.naol.moviemania.domain.util.toDate
 import com.naol.moviemania.presentation.components.RatingIndicator
+import com.naol.moviemania.presentation.home.MovieDetailScreenRoute
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
@@ -62,6 +70,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchMoviesScreen(
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: SearchMoviesViewModel = koinViewModel()
 ) {
@@ -89,36 +98,47 @@ fun SearchMoviesScreen(
         }
     })
 
-    Column() {
-        SearchBar(query = query, onQueryChange = {
-            query = it
-        }, onSearch = {
-            viewModel.searchMovies(query)
-            active = false
-        }, active = active,
-            onActiveChange = {
-                active = it
-            },
-            placeholder = { Text("Search") },
-            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
-            trailingIcon = {
-                if (active) {
-                    IconButton(onClick = {
-                        if (query.isNotBlank()) {
-                            query = ""
-                        } else {
-                            active = false
-                        }
-                    }) {
-                        Icon(Icons.Filled.Clear, contentDescription = "Clear Search")
-                    }
-                }
-            },
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(top = 0.dp)
         ) {
+            SearchBar(query = query, onQueryChange = {
+                query = it
+            }, onSearch = {
+                viewModel.searchMovies(query)
+                active = false
+            }, active = active,
+                onActiveChange = {
+                    active = it
+                },
+                placeholder = { Text("Search") },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
+                trailingIcon = {
+                    if (active) {
+                        IconButton(onClick = {
+                            if (query.isNotBlank()) {
+                                query = ""
+                            } else {
+                                active = false
+                            }
+                        }) {
+                            Icon(Icons.Filled.Clear, contentDescription = "Clear Search")
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter)
+                    .padding(horizontal = 16.dp)
 
+            ) {
+
+            }
         }
         when (val state = searchResults) {
             is NetworkResult.Success -> {
@@ -127,7 +147,11 @@ fun SearchMoviesScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     items(state.data) { movie ->
-                        SearchResultItem(movie = movie)
+                        SearchResultItem(movie = movie, onMovieClick = {
+                            navController.navigate(
+                                MovieDetailScreenRoute(it)
+                            )
+                        })
                     }
                 }
             }
@@ -141,7 +165,8 @@ fun SearchMoviesScreen(
 @Composable
 fun SearchResultItem(
     movie: ApiMovie,  // Replace with actual Movie model
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onMovieClick: (Int) -> Unit = {}
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -149,7 +174,7 @@ fun SearchResultItem(
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
             .padding(horizontal = 16.dp)
-            .clickable { /* Handle click event */ }
+            .clickable { onMovieClick(movie.id) }
     ) {
         val imageURL = IMAGE_URL + movie.poster_path
         AsyncImage(
