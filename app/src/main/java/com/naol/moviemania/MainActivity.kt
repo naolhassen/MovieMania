@@ -36,7 +36,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.naol.moviemania.data.model.bottomNavItems
+import com.naol.moviemania.data.remote.model.bottomNavItems
 import com.naol.moviemania.presentation.home.HomeScreen
 import com.naol.moviemania.presentation.home.MovieCategoryRoute
 import com.naol.moviemania.presentation.home.MovieDetailScreenRoute

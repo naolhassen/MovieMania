@@ -1,4 +1,4 @@
-package com.naol.moviemania.data.model
+package com.naol.moviemania.data.remote.model
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite

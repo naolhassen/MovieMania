@@ -1,9 +1,9 @@
 package com.naol.moviemania.domain.repository
 
-import com.naol.moviemania.data.api.model.MovieResponse
-import com.naol.moviemania.data.NetworkResult
-import com.naol.moviemania.data.model.ApiMovieDetails
-import com.naol.moviemania.data.model.CastsResponse
+import com.naol.moviemania.data.remote.model.MovieResponse
+import com.naol.moviemania.data.remote.model.NetworkResult
+import com.naol.moviemania.data.remote.model.ApiMovieDetails
+import com.naol.moviemania.data.remote.model.CastsResponse
 
 interface MovieManiaRepository {
     suspend fun getMovies(category: String, page: Int): NetworkResult<MovieResponse>

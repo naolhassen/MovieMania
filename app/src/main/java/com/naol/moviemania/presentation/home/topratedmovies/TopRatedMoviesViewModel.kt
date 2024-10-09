@@ -2,7 +2,7 @@ package com.naol.moviemania.presentation.home.topratedmovies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naol.moviemania.data.NetworkResult
+import com.naol.moviemania.data.remote.model.NetworkResult
 import com.naol.moviemania.domain.mapper.toMovie
 import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.domain.usecase.GetMoviesUseCase

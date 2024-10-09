@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,13 +29,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.naol.moviemania.data.NetworkResult
-import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
+import com.naol.moviemania.data.remote.model.NetworkResult
+import com.naol.moviemania.data.remote.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.NeutralColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
-import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
 

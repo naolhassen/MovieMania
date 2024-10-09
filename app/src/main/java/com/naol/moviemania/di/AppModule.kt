@@ -2,10 +2,10 @@ package com.naol.moviemania.di
 
 
 import com.naol.moviemania.BuildConfig
-import com.naol.moviemania.data.api.ApiKeyInterceptor
-import com.naol.moviemania.data.api.TMDBApi
-import com.naol.moviemania.data.api.TMDBApi.Companion.BASE_URL
-import com.naol.moviemania.data.repository.MovieManiaRepositoryImpl
+import com.naol.moviemania.data.remote.ApiKeyInterceptor
+import com.naol.moviemania.data.remote.TMDBApi
+import com.naol.moviemania.data.remote.TMDBApi.Companion.BASE_URL
+import com.naol.moviemania.data.remote.repository.RemoteRepositoryImpl
 import com.naol.moviemania.domain.repository.MovieManiaRepository
 import com.naol.moviemania.domain.usecase.GetMovieCreditsUseCase
 import com.naol.moviemania.domain.usecase.GetMovieDetailsUseCase
@@ -52,7 +52,7 @@ val appModule = module {
     }
 
     single<MovieManiaRepository>(qualifier = named("remote")) {
-        MovieManiaRepositoryImpl(get())
+        RemoteRepositoryImpl(get())
     }
 
     single {

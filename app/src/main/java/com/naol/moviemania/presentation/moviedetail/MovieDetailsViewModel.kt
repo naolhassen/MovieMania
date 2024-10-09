@@ -2,9 +2,9 @@ package com.naol.moviemania.presentation.moviedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naol.moviemania.data.NetworkResult
-import com.naol.moviemania.data.model.ApiMovieDetails
-import com.naol.moviemania.data.model.CastsResponse
+import com.naol.moviemania.data.remote.model.NetworkResult
+import com.naol.moviemania.data.remote.model.ApiMovieDetails
+import com.naol.moviemania.data.remote.model.CastsResponse
 import com.naol.moviemania.domain.usecase.GetMovieCreditsUseCase
 import com.naol.moviemania.domain.usecase.GetMovieDetailsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow

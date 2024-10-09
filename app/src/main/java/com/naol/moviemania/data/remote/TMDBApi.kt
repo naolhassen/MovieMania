@@ -1,8 +1,8 @@
-package com.naol.moviemania.data.api
+package com.naol.moviemania.data.remote
 
-import com.naol.moviemania.data.api.model.MovieResponse
-import com.naol.moviemania.data.model.ApiMovieDetails
-import com.naol.moviemania.data.model.CastsResponse
+import com.naol.moviemania.data.remote.model.MovieResponse
+import com.naol.moviemania.data.remote.model.ApiMovieDetails
+import com.naol.moviemania.data.remote.model.CastsResponse
 import okhttp3.Interceptor
 import retrofit2.http.GET
 import retrofit2.http.Path

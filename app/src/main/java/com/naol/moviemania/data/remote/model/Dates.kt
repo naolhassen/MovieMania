@@ -1,4 +1,4 @@
-package com.naol.moviemania.data.model
+package com.naol.moviemania.data.remote.model
 
 data class Dates(
     val maximum: String,

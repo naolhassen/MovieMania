@@ -35,10 +35,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.naol.moviemania.data.api.TMDBApi.Companion.IMAGE_URL
-import com.naol.moviemania.data.model.Cast
-import com.naol.moviemania.data.model.CastsResponse
-import com.naol.moviemania.data.model.Genre
+import com.naol.moviemania.data.remote.TMDBApi.Companion.IMAGE_URL
+import com.naol.moviemania.data.remote.model.Cast
+import com.naol.moviemania.data.remote.model.CastsResponse
+import com.naol.moviemania.data.remote.model.Genre
 import com.naol.moviemania.presentation.components.RatingIndicator
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.PrimaryColor

@@ -1,4 +1,4 @@
-package com.naol.moviemania.data
+package com.naol.moviemania.data.remote.model
 
 sealed class NetworkResult<out T> {
     data class Success<T>(val data: T) : NetworkResult<T>()

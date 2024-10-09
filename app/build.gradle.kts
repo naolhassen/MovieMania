@@ -90,4 +90,6 @@ dependencies {
     // Koin
     implementation(libs.bundles.koin)
 
+    implementation(libs.bundles.room)
+
 }

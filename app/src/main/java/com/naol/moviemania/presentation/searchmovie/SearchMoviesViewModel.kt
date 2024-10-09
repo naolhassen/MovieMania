@@ -2,11 +2,8 @@ package com.naol.moviemania.presentation.searchmovie
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naol.moviemania.data.NetworkResult
-import com.naol.moviemania.data.api.model.MovieResponse
-import com.naol.moviemania.data.model.ApiMovie
-import com.naol.moviemania.domain.mapper.toMovie
-import com.naol.moviemania.domain.model.Movie
+import com.naol.moviemania.data.remote.model.NetworkResult
+import com.naol.moviemania.data.remote.model.ApiMovie
 import com.naol.moviemania.domain.usecase.SearchMoviesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

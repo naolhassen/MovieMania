@@ -2,7 +2,6 @@ package com.naol.moviemania.presentation.home.allmovies
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -17,7 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.naol.moviemania.data.NetworkResult
+import com.naol.moviemania.data.remote.model.NetworkResult
 import com.naol.moviemania.presentation.components.MovieListItem
 import com.naol.moviemania.presentation.home.MovieDetailScreenRoute
 import org.koin.androidx.compose.koinViewModel
