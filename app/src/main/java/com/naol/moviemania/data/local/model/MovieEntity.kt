@@ -1,6 +1,7 @@
 package com.naol.moviemania.data.local.model
 
 import androidx.room.Entity
+import com.naol.moviemania.domain.model.Movie
 
 @Entity(tableName = "movie")
 data class MovieEntity(
@@ -12,4 +13,16 @@ data class MovieEntity(
     val voteAverage: Double,
     val popularity: Double,
     val backdropPath: String
+)
+
+
+fun MovieEntity.toDomain() = Movie(
+    id,
+    title,
+    overview,
+    posterPath,
+    releaseDate,
+    voteAverage,
+    popularity,
+    backdropPath
 )
