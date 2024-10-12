@@ -42,7 +42,8 @@ import org.koin.androidx.compose.koinViewModel
 fun NowPlayingScreen(
     modifier: Modifier = Modifier,
     viewModel: NowPlayingViewModel = koinViewModel(),
-    onMovieClick: (Int) -> Unit = {}
+    onMovieClick: (Int) -> Unit = {},
+    onFavoriteClick: (Movie) -> Unit = {}
 ) {
     val viewState by viewModel.ldNowPlayingMovies.collectAsState()
     LaunchedEffect(key1 = viewModel, block = { viewModel.fetchInitialData() })
@@ -60,7 +61,8 @@ fun NowPlayingScreen(
             ) { page ->
                 NowPlaying(
                     nowPlaying = state.data[page],
-                    onClick = { onMovieClick(state.data[page].id) })
+                    onMovieClick = { onMovieClick(state.data[page].id) },
+                    onFavoriteClick = { onFavoriteClick(state.data[page]) })
             }
         }
 
@@ -74,14 +76,17 @@ fun NowPlayingScreen(
 
 @Composable
 fun NowPlaying(
-    nowPlaying: Movie, modifier: Modifier = Modifier, onClick: () -> Unit = {}
+    nowPlaying: Movie,
+    modifier: Modifier = Modifier,
+    onMovieClick: () -> Unit = {},
+    onFavoriteClick: () -> Unit = {}
 ) {
     val imagePath = IMAGE_URL + nowPlaying.backdropPath
 
     Box(
         modifier = Modifier
             .offset(x = (-16).dp)
-            .clickable { onClick() }
+
     ) {
         AsyncImage(
             model = imagePath,
@@ -95,18 +100,20 @@ fun NowPlaying(
 
         Icon(
             imageVector = Icons.Default.Favorite,
-            tint = AccentColor,
+            tint = if (nowPlaying.isFavorite) AccentColor else NeutralColor,
             contentDescription = "",
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.TopEnd)
                 .size(24.dp)
+                .clickable { onFavoriteClick() }
         )
 
         Column(
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.BottomStart)
+                .clickable { onMovieClick() }
         ) {
             Text(
                 text = nowPlaying.title,

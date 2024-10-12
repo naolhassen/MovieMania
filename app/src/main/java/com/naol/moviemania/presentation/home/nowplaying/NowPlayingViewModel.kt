@@ -6,12 +6,15 @@ import com.naol.moviemania.data.remote.model.NetworkResult
 import com.naol.moviemania.domain.mapper.toMovie
 import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.domain.usecase.GetMoviesUseCase
+import com.naol.moviemania.domain.usecase.SaveFavMovieUseCase
 import com.naol.moviemania.presentation.home.MovieCatalog
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class NowPlayingViewModel(private val getMoviesUseCase: GetMoviesUseCase) :
+class NowPlayingViewModel(
+    private val getMoviesUseCase: GetMoviesUseCase
+) :
     ViewModel() {
     private val _ldNowPlayingMovies =
         MutableStateFlow<NetworkResult<List<Movie>>>(NetworkResult.Loading)
@@ -41,4 +44,6 @@ class NowPlayingViewModel(private val getMoviesUseCase: GetMoviesUseCase) :
             }
         }
     }
+
+
 }

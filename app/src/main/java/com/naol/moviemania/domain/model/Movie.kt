@@ -10,7 +10,8 @@ data class Movie(
     val releaseDate: String,
     val voteAverage: Double,
     val popularity: Double,
-    val backdropPath: String
+    val backdropPath: String,
+    val isFavorite: Boolean = false
 )
 
 

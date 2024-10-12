@@ -10,7 +10,9 @@ import com.naol.moviemania.domain.repository.MovieManiaRepository
 import com.naol.moviemania.domain.usecase.GetMovieCreditsUseCase
 import com.naol.moviemania.domain.usecase.GetMovieDetailsUseCase
 import com.naol.moviemania.domain.usecase.GetMoviesUseCase
+import com.naol.moviemania.domain.usecase.RemoveFavMovieUseCase
 import com.naol.moviemania.domain.usecase.SearchMoviesUseCase
+import com.naol.moviemania.presentation.home.HomeViewModel
 import com.naol.moviemania.presentation.home.allmovies.AllMoviesViewModel
 import com.naol.moviemania.presentation.home.nowplaying.NowPlayingViewModel
 import com.naol.moviemania.presentation.home.popularmovies.PopularMoviesViewModel
@@ -71,6 +73,14 @@ val appModule = module {
         GetMovieCreditsUseCase(get(named("remote")))
     }
 
+    single {
+        RemoveFavMovieUseCase(get())
+    }
+
+    viewModel {
+        HomeViewModel(get(), get())
+    }
+
     viewModel {
         PopularMoviesViewModel(get())
     }
@@ -94,6 +104,7 @@ val appModule = module {
     viewModel {
         MovieDetailsViewModel(get(), get())
     }
+
 }
 
 

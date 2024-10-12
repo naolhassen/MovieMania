@@ -21,6 +21,7 @@ import com.naol.moviemania.ui.theme.LightColor2
 import com.naol.moviemania.ui.theme.PrimaryColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
 
 @Serializable
 data class MovieDetailScreenRoute(
@@ -43,7 +44,8 @@ enum class MovieCatalog(val title: String, val route: String) {
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = koinViewModel()
 ) {
     LazyColumn() {
         for (category in MovieCatalog.entries) {
@@ -66,7 +68,11 @@ fun HomeScreen(
                         navController.navigate(
                             MovieDetailScreenRoute(it)
                         )
-                    })
+                    },
+                        onFavoriteClick = {
+                            viewModel.toggleFavMovie(it)
+                        }
+                    )
                 }
 
                 MovieCatalog.POPULAR -> item {

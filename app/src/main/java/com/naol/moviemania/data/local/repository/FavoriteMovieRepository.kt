@@ -22,4 +22,7 @@ class FavoriteMovieRepository(private val movieDao: MovieDao) {
     suspend fun deleteAllMovies() {
         movieDao.deleteAll()
     }
+
+    suspend fun isMovieFavorite(movieId: Int): Boolean = movieDao.getMovieById(movieId) != null
+
 }
