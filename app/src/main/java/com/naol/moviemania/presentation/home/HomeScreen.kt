@@ -44,8 +44,7 @@ enum class MovieCatalog(val title: String, val route: String) {
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = koinViewModel()
+    modifier: Modifier = Modifier
 ) {
     LazyColumn() {
         for (category in MovieCatalog.entries) {
@@ -70,7 +69,7 @@ fun HomeScreen(
                         )
                     },
                         onFavoriteClick = {
-                            viewModel.toggleFavMovie(it)
+
                         }
                     )
                 }

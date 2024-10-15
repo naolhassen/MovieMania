@@ -8,17 +8,8 @@ import com.naol.moviemania.domain.usecase.SaveFavMovieUseCase
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val saveFavMovieUseCase: SaveFavMovieUseCase,
-    private val removeFavMovieUseCase: RemoveFavMovieUseCase
+
 ) : ViewModel() {
-    fun toggleFavMovie(movie: Movie) {
-        viewModelScope.launch {
-            if (movie.isFavorite) {
-                removeFavMovieUseCase.remove(movie)
-            } else {
-                saveFavMovieUseCase.save(movie)
-            }
-        }
-    }
+
 }
 

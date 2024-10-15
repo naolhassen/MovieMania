@@ -63,7 +63,7 @@ fun NowPlayingScreen(
                 NowPlaying(
                     nowPlaying = state.data[page],
                     onMovieClick = { onMovieClick(state.data[page].id) },
-                    onFavoriteClick = { onFavoriteClick(state.data[page]) })
+                    onFavoriteClick = {viewModel.toggleFavMovie(state.data[page])})
             }
         }
 

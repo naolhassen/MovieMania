@@ -15,6 +15,7 @@ import com.naol.moviemania.domain.repository.MovieManiaRepository
 import com.naol.moviemania.domain.usecase.GetMovieCreditsUseCase
 import com.naol.moviemania.domain.usecase.GetMovieDetailsUseCase
 import com.naol.moviemania.domain.usecase.GetMoviesUseCase
+import com.naol.moviemania.domain.usecase.IsFavMovieUseCase
 import com.naol.moviemania.domain.usecase.RemoveFavMovieUseCase
 import com.naol.moviemania.domain.usecase.SaveFavMovieUseCase
 import com.naol.moviemania.domain.usecase.SearchMoviesUseCase
@@ -67,13 +68,13 @@ val appModule = module {
 
 val viewModelsModule = module {
     viewModel {
-        HomeViewModel(get(),get())
+        HomeViewModel()
     }
     viewModel {
         TopRatedMoviesViewModel(get())
     }
     viewModel {
-        NowPlayingViewModel(get())
+        NowPlayingViewModel(get(), get(), get(), get())
     }
     viewModel {
         UpcomingMoviesViewModel(get())
@@ -104,6 +105,8 @@ val useCasesModule = module {
     single { SaveFavMovieUseCase(get(named("local"))) }
 
     single { RemoveFavMovieUseCase(get(named("local"))) }
+
+    single { IsFavMovieUseCase(get(named("local"))) }
 }
 
 val databaseModule = module {
