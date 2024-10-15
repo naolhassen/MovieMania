@@ -4,9 +4,9 @@ import com.naol.moviemania.data.local.dao.MovieDao
 import com.naol.moviemania.data.local.model.toDomain
 import com.naol.moviemania.domain.model.Movie
 import com.naol.moviemania.domain.model.toEntity
+import org.koin.core.component.KoinComponent
 
-
-class FavoriteMovieRepository(private val movieDao: MovieDao) {
+class FavoriteMovieRepository(private val movieDao: MovieDao) : KoinComponent {
     suspend fun insertMovie(movie: Movie) {
         movieDao.insert(movie.toEntity())
     }
@@ -26,3 +26,5 @@ class FavoriteMovieRepository(private val movieDao: MovieDao) {
     suspend fun isMovieFavorite(movieId: Int): Boolean = movieDao.getMovieById(movieId) != null
 
 }
+
+

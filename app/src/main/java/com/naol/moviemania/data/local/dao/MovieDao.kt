@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.naol.moviemania.data.local.model.MovieEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
@@ -24,5 +23,4 @@ interface MovieDao {
 
     @Query("DELETE FROM movie")
     suspend fun deleteAll()
-
 }

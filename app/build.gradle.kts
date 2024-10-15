@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    kotlin("kapt")
 }
 
 android {
@@ -22,7 +23,6 @@ android {
             useSupportLibrary = true
         }
 
-        // Define localProperties
         val localProperties = Properties()
         localProperties.load(rootProject.file("local.properties").inputStream())
 
@@ -60,7 +60,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -76,20 +75,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime)
-
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.serialization.json)
-
-    // Retrofit
     implementation(libs.bundles.rerofit)
-
-    // Koin
     implementation(libs.bundles.koin)
-
     implementation(libs.bundles.room)
-
+    //noinspection KaptUsageInsteadOfKsp
+    kapt(libs.room.compiler)
 }

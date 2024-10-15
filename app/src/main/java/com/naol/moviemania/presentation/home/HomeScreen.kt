@@ -70,7 +70,7 @@ fun HomeScreen(
                         )
                     },
                         onFavoriteClick = {
-                            viewModel.toggleFavMovie(it)
+//                            viewModel.toggleFavMovie(it)
                         }
                     )
                 }
