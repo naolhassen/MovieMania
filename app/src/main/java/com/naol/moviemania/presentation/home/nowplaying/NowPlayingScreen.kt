@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -99,7 +100,7 @@ fun NowPlaying(
         )
 
         Icon(
-            imageVector = Icons.Default.Favorite,
+            imageVector = if(nowPlaying.isFavorite) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
             tint = if (nowPlaying.isFavorite) AccentColor else NeutralColor,
             contentDescription = "",
             modifier = Modifier

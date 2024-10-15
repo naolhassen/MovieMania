@@ -67,9 +67,8 @@ val appModule = module {
 
 val viewModelsModule = module {
     viewModel {
-        HomeViewModel(get())
+        HomeViewModel(get(),get())
     }
-
     viewModel {
         TopRatedMoviesViewModel(get())
     }
@@ -82,15 +81,12 @@ val viewModelsModule = module {
     viewModel {
         AllMoviesViewModel(get())
     }
-
     viewModel {
         SearchMoviesViewModel(get())
     }
-
     viewModel {
         MovieDetailsViewModel(get(), get())
     }
-
     viewModel {
         PopularMoviesViewModel(get())
     }
@@ -105,9 +101,9 @@ val useCasesModule = module {
 
     single { GetMovieCreditsUseCase(get(named("remote"))) }
 
-    single { SaveFavMovieUseCase(get()) }
+    single { SaveFavMovieUseCase(get(named("local"))) }
 
-    single { RemoveFavMovieUseCase(get()) }
+    single { RemoveFavMovieUseCase(get(named("local"))) }
 }
 
 val databaseModule = module {
