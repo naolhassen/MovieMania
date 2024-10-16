@@ -5,8 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.naol.moviemania.data.remote.model.NetworkResult
 import com.naol.moviemania.data.remote.model.ApiMovieDetails
 import com.naol.moviemania.data.remote.model.CastsResponse
+import com.naol.moviemania.domain.mapper.toMovie
+import com.naol.moviemania.domain.mapper.toMovieDetails
+import com.naol.moviemania.domain.model.Movie
+import com.naol.moviemania.domain.model.MovieDetails
 import com.naol.moviemania.domain.usecase.GetMovieCreditsUseCase
 import com.naol.moviemania.domain.usecase.GetMovieDetailsUseCase
+import com.naol.moviemania.domain.usecase.IsFavMovieUseCase
+import com.naol.moviemania.domain.usecase.RemoveFavMovieUseCase
+import com.naol.moviemania.domain.usecase.SaveFavMovieUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,10 +27,13 @@ sealed class UiState<out T> {
 
 class MovieDetailsViewModel(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
-    private val getMovieCreditsUseCase: GetMovieCreditsUseCase
+    private val getMovieCreditsUseCase: GetMovieCreditsUseCase,
+    private val saveFavMovieUseCase: SaveFavMovieUseCase,
+    private val removeFavMovieUseCase: RemoveFavMovieUseCase,
+    private val isFavMovieUseCase: IsFavMovieUseCase,
 ) :
     ViewModel() {
-    private var _ldMovieDetails = MutableStateFlow<UiState<ApiMovieDetails>>(UiState.Loading)
+    private var _ldMovieDetails = MutableStateFlow<UiState<MovieDetails>>(UiState.Loading)
     val ldMovieDetails = _ldMovieDetails
 
     private var _ldMovieCredits = MutableStateFlow<UiState<CastsResponse>>(UiState.Loading)
@@ -33,9 +43,14 @@ class MovieDetailsViewModel(
         getMovieDetailsUseCase.execute(movieId).collect { result ->
             when (result) {
                 is NetworkResult.Success -> {
-                    _ldMovieDetails.emit(UiState.Success(result.data))
+                    _ldMovieDetails.emit(
+                        UiState.Success(
+                            result.data.toMovieDetails().copy(
+                                isFavorite = isFavMovieUseCase.isFavMovie(result.data.toMovieDetails().id)
+                            )
+                        )
+                    )
                 }
-
                 is NetworkResult.Error -> {}
                 is NetworkResult.Loading -> {}
             }
@@ -48,8 +63,24 @@ class MovieDetailsViewModel(
                 is NetworkResult.Success -> {
                     _ldMovieCredits.emit(UiState.Success(result.data))
                 }
+
                 is NetworkResult.Error -> {}
                 is NetworkResult.Loading -> {}
+            }
+        }
+    }
+
+    fun toggleFavorite(movie: Movie) = viewModelScope.launch{
+        if (movie.isFavorite) {
+            removeFavMovieUseCase.remove(movie)
+        } else {
+            saveFavMovieUseCase.save(movie)
+        }
+
+        _ldMovieDetails.value.let { result ->
+            if (result is UiState.Success) {
+                val updatedMovie = result.data.copy(isFavorite = !result.data.isFavorite)
+                _ldMovieDetails.emit(UiState.Success(updatedMovie))
             }
         }
     }

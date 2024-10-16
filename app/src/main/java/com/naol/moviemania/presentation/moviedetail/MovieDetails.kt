@@ -18,7 +18,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,11 +31,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +46,7 @@ import com.naol.moviemania.data.remote.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.data.remote.model.Cast
 import com.naol.moviemania.data.remote.model.CastsResponse
 import com.naol.moviemania.data.remote.model.Genre
+import com.naol.moviemania.domain.mapper.toMovie
 import com.naol.moviemania.presentation.components.RatingIndicator
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.PrimaryColor
@@ -48,8 +56,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieDetailsScreen(
-    id: Int, modifier: Modifier = Modifier,
-    viewModel: MovieDetailsViewModel = koinViewModel()
+    id: Int, modifier: Modifier = Modifier, viewModel: MovieDetailsViewModel = koinViewModel()
 ) {
     val movieDetailState = viewModel.ldMovieDetails.collectAsState().value
     val creditsState = viewModel.ldMovieCredits.collectAsState().value
@@ -64,12 +71,16 @@ fun MovieDetailsScreen(
             val movie = movieDetailState.data
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier
-                    .fillMaxSize()
+                modifier = modifier.fillMaxSize()
             ) {
-                item { Poster(movie.poster_path, movie.backdrop_path) }
-                item { Header(movie.title, movie.release_date.substring(0, 4)) }
-                item { SecondaryHeader(movie.vote_average) }
+                item { Poster(movie.posterPath, movie.backdropPath) }
+                item { Header(movie.title, movie.releaseDate.substring(0, 4)) }
+                item {
+                    SecondaryHeader(
+                        movie.voteAverage,
+                        movie.isFavorite,
+                        onFavoriteClick = { viewModel.toggleFavorite(movie.toMovie()) })
+                }
                 item { Genres(movie.genres) }
                 item { Overview(movie.overview, movie.tagline) }
                 item { Spacer(modifier = Modifier.height(16.dp)) }
@@ -88,9 +99,7 @@ fun MovieDetailsScreen(
 
 @Composable
 fun Poster(
-    posterPath: String,
-    backdropPath: String,
-    modifier: Modifier = Modifier
+    posterPath: String, backdropPath: String, modifier: Modifier = Modifier
 ) {
     Box {
         val posterUrl = IMAGE_URL + posterPath
@@ -139,7 +148,12 @@ fun Header(title: String, releaseYear: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SecondaryHeader(rating: Double, modifier: Modifier = Modifier) {
+fun SecondaryHeader(
+    rating: Double,
+    isFavorite: Boolean,
+    modifier: Modifier = Modifier,
+    onFavoriteClick: () -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -149,17 +163,14 @@ fun SecondaryHeader(rating: Double, modifier: Modifier = Modifier) {
     ) {
         Box {
             RatingIndicator(
-                rating = rating,
-                modifier = Modifier
-                    .size(60.dp)
+                rating = rating, modifier = Modifier.size(60.dp)
             )
             Text(
                 text = buildAnnotatedString {
                     append((rating * 10).toInt().toString())
                     withStyle(
                         style = SpanStyle(
-                            baselineShift = BaselineShift.Superscript,
-                            fontSize = 8.sp
+                            baselineShift = BaselineShift.Superscript, fontSize = 8.sp
                         )
                     ) {
                         append("%")
@@ -190,13 +201,26 @@ fun SecondaryHeader(rating: Double, modifier: Modifier = Modifier) {
                 .padding(horizontal = 28.dp)
         )
 
-        Text(
-            text = "What's your Vibe?",
-            color = PrimaryColor,
-            fontWeight = FontWeight.Bold,
-            fontFamily = robotoFontFamily,
-            modifier = Modifier.padding(start = 16.dp)
-        )
+
+
+        Button(modifier = Modifier
+            .padding(start = 16.dp),
+            border = if (isFavorite) null else ButtonDefaults.outlinedButtonBorder,
+            colors = ButtonDefaults.buttonColors(if (isFavorite) AccentColor else Color.Transparent),
+            onClick = { onFavoriteClick() }) {
+            Text(
+                text = "Favorite",
+                fontWeight = FontWeight.Bold,
+                fontFamily = robotoFontFamily,
+                color = PrimaryColor
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(
+                imageVector = Icons.Default.Favorite,
+                contentDescription = "Favorite",
+                tint = PrimaryColor
+            )
+        }
     }
 }
 
@@ -208,14 +232,13 @@ fun Genres(genres: List<Genre>, modifier: Modifier = Modifier) {
         fontSize = 14.sp,
         fontFamily = robotoFontFamily,
         fontWeight = FontWeight.Bold,
-        modifier = modifier
-            .padding(top = 8.dp, start = 16.dp)
+        modifier = modifier.padding(top = 8.dp, start = 16.dp)
     )
 }
 
 @Composable
 fun Overview(overview: String, tagline: String, modifier: Modifier = Modifier) {
-    Column {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = tagline,
             color = PrimaryColor,
@@ -241,8 +264,8 @@ fun Overview(overview: String, tagline: String, modifier: Modifier = Modifier) {
             fontSize = 14.sp,
             fontFamily = robotoFontFamily,
             fontWeight = FontWeight.Light,
-            modifier = Modifier
-                .padding(16.dp)
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(16.dp)
         )
     }
 }

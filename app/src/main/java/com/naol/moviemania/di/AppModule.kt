@@ -88,7 +88,7 @@ val viewModelsModule = module {
         SearchMoviesViewModel(get())
     }
     viewModel {
-        MovieDetailsViewModel(get(), get())
+        MovieDetailsViewModel(get(), get(), get(), get(), get())
     }
     viewModel {
         PopularMoviesViewModel(get())

@@ -1,12 +1,8 @@
 package com.naol.moviemania.domain.model
 
 import com.naol.moviemania.data.remote.model.Genre
-import com.naol.moviemania.data.remote.model.ProductionCompany
-import com.naol.moviemania.data.remote.model.ProductionCountry
-import com.naol.moviemania.data.remote.model.SpokenLanguage
 
-
-data class Movie(
+data class MovieDetails(
     val id: Int,
     val title: String,
     val overview: String,
@@ -15,6 +11,7 @@ data class Movie(
     val voteAverage: Double,
     val popularity: Double,
     val backdropPath: String,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
+    val tagline: String,
+    val genres: List<Genre>,
 )
-
