@@ -49,6 +49,7 @@ import com.naol.moviemania.R
 import com.naol.moviemania.data.remote.model.NetworkResult
 import com.naol.moviemania.data.remote.TMDBApi.Companion.IMAGE_URL
 import com.naol.moviemania.data.remote.model.ApiMovie
+import com.naol.moviemania.presentation.components.StarRating
 import com.naol.moviemania.presentation.home.MovieDetailScreenRoute
 import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
@@ -206,24 +207,3 @@ fun SearchResultItem(
     }
 }
 
-@Composable
-fun StarRating(rating: Double, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        repeat(5) { index ->
-            val (icon, iconTint) = when {
-                index <= rating -> painterResource(id = R.drawable.round_star_filled) to AccentColor
-                index - rating < 1 -> painterResource(id = R.drawable.round_star_half) to AccentColor
-                else -> painterResource(id = R.drawable.round_star_border) to Color.LightGray
-            }
-            Icon(
-                painter = icon,
-                contentDescription = null,
-                tint = iconTint,
-                modifier = Modifier.size(16.dp)
-            )
-        }
-    }
-}

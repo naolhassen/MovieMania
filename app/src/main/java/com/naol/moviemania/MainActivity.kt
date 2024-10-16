@@ -38,6 +38,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.naol.moviemania.data.remote.model.bottomNavItems
+import com.naol.moviemania.presentation.favmovies.FavoriteMoviesScreen
 import com.naol.moviemania.presentation.home.HomeScreen
 import com.naol.moviemania.presentation.home.MovieCategoryRoute
 import com.naol.moviemania.presentation.home.MovieDetailScreenRoute
@@ -133,12 +134,9 @@ fun Navigation(navController: NavHostController, modifier: Modifier) {
         bottomNavItems.forEach { item ->
             composable(item.route) {
                 when (item.route) {
-                    "home" -> HomeScreen(
-                        navController = navController
-                    )
-
+                    "home" -> HomeScreen(navController = navController)
                     "search" -> SearchMoviesScreen(navController = navController)
-                    "favorite" -> FavoriteScreen("")
+                    "favorite" -> FavoriteMoviesScreen()
                     "profile" -> ProfileScreen()
                 }
             }
@@ -156,19 +154,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier) {
     }
 }
 
-@Composable
-fun FavoriteScreen(category: String) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Text(
-            text = "$category Screen ", color = PrimaryColor,
-            modifier = Modifier
-                .align(Alignment.Center)
-        )
-    }
-}
+
 
 @Composable
 fun ProfileScreen() {

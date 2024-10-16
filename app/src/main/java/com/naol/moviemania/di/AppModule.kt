@@ -12,6 +12,7 @@ import com.naol.moviemania.data.remote.TMDBApi
 import com.naol.moviemania.data.remote.TMDBApi.Companion.BASE_URL
 import com.naol.moviemania.data.remote.repository.RemoteRepositoryImpl
 import com.naol.moviemania.domain.repository.MovieManiaRepository
+import com.naol.moviemania.domain.usecase.GetFavMoviesUseCase
 import com.naol.moviemania.domain.usecase.GetMovieCreditsUseCase
 import com.naol.moviemania.domain.usecase.GetMovieDetailsUseCase
 import com.naol.moviemania.domain.usecase.GetMoviesUseCase
@@ -19,6 +20,7 @@ import com.naol.moviemania.domain.usecase.IsFavMovieUseCase
 import com.naol.moviemania.domain.usecase.RemoveFavMovieUseCase
 import com.naol.moviemania.domain.usecase.SaveFavMovieUseCase
 import com.naol.moviemania.domain.usecase.SearchMoviesUseCase
+import com.naol.moviemania.presentation.favmovies.FavoriteMoviesViewModel
 import com.naol.moviemania.presentation.home.HomeViewModel
 import com.naol.moviemania.presentation.home.allmovies.AllMoviesViewModel
 import com.naol.moviemania.presentation.home.nowplaying.NowPlayingViewModel
@@ -91,6 +93,10 @@ val viewModelsModule = module {
     viewModel {
         PopularMoviesViewModel(get())
     }
+
+    viewModel {
+        FavoriteMoviesViewModel(get(),get())
+    }
 }
 
 val useCasesModule = module {
@@ -107,6 +113,8 @@ val useCasesModule = module {
     single { RemoveFavMovieUseCase(get(named("local"))) }
 
     single { IsFavMovieUseCase(get(named("local"))) }
+
+    single { GetFavMoviesUseCase(get(named("local"))) }
 }
 
 val databaseModule = module {
