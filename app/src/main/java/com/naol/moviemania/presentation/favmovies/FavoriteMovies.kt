@@ -64,27 +64,26 @@ fun FavoriteMoviesScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(favMovies) { movie ->
-
-            FavMovieItem(movie = movie)
+            SwipeableFavMovieItem(movie = movie, onRemove = { movieToRemove ->
+                viewModel.removeFavMovie(movieToRemove)
+            })
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavMovieItem(
+fun SwipeableFavMovieItem(
     movie: Movie,
-    modifier: Modifier = Modifier,
-    viewModel: FavoriteMoviesViewModel = koinViewModel()
+    onRemove: (Movie) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-
     val dismissState = rememberSwipeToDismissBoxState()
-    when (dismissState.currentValue) {
-        SwipeToDismissBoxValue.StartToEnd -> {}
-        SwipeToDismissBoxValue.EndToStart -> {
-            viewModel.removeFavMovie(movie)
+    LaunchedEffect(dismissState.currentValue) {
+        if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart) {
+            onRemove(movie)
+            dismissState.snapTo(SwipeToDismissBoxValue.Settled)
         }
-        SwipeToDismissBoxValue.Settled -> {}
     }
 
     SwipeToDismissBox(
@@ -106,55 +105,59 @@ fun FavMovieItem(
             }
         },
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min)
-                .padding(horizontal = 16.dp)
-                .background(SecondaryColor)
-        ) {
-            val imageURL = IMAGE_URL + movie.posterPath
-            AsyncImage(
-                model = imageURL,
-                contentDescription = movie.title,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(100.dp)
-                    .clip(RoundedCornerShape(8.dp))
-            )
-            Column(
-                modifier = modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(vertical = 8.dp)
-                    .padding(end = 8.dp)
-            ) {
-                Text(
-                    text = movie.title,
-                    fontFamily = robotoFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    color = AccentColor,
-                )
-                Text(
-                    text = movie.releaseDate,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = robotoFontFamily
-                )
-                Text(
-                    text = movie.overview,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Light,
-                    fontFamily = robotoFontFamily,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                StarRating(
-                    rating = movie.voteAverage / 2,
-                    modifier = Modifier.align(Alignment.End)
-                )
-            }
-        }
+        FavMovieItem(movie = movie)
+    }
+}
 
+@Composable
+fun FavMovieItem(movie: Movie, modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+            .padding(horizontal = 16.dp)
+            .background(SecondaryColor)
+    ) {
+        val imageURL = IMAGE_URL + movie.posterPath
+        AsyncImage(
+            model = imageURL,
+            contentDescription = movie.title,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(100.dp)
+                .clip(RoundedCornerShape(8.dp))
+        )
+        Column(
+            modifier = modifier
+                .align(Alignment.CenterVertically)
+                .padding(vertical = 8.dp)
+                .padding(end = 8.dp)
+        ) {
+            Text(
+                text = movie.title,
+                fontFamily = robotoFontFamily,
+                fontWeight = FontWeight.Bold,
+                color = AccentColor,
+            )
+            Text(
+                text = movie.releaseDate,
+                fontWeight = FontWeight.Normal,
+                fontFamily = robotoFontFamily
+            )
+            Text(
+                text = movie.overview,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Light,
+                fontFamily = robotoFontFamily,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+            StarRating(
+                rating = movie.voteAverage / 2,
+                modifier = Modifier.align(Alignment.End)
+            )
+        }
     }
 }
