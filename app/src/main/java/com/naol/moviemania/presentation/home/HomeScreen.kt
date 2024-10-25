@@ -68,9 +68,9 @@ fun HomeScreen(
                             MovieDetailScreenRoute(it)
                         )
                     },
-                        onFavoriteClick = {
-
-                        }
+//                        onFavoriteClick = {
+//
+//                        }
                     )
                 }
 

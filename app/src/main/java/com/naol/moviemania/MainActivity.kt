@@ -8,13 +8,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -61,16 +59,15 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(title = { AppName() })
-        },
+//        topBar = {
+//            TopAppBar(title = { AppName() })
+//        },
         bottomBar = {
             NavigationBar {
                 bottomNavItems.forEachIndexed { index, item ->
@@ -88,8 +85,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                             text = item.title,
                             color = if (index == selectedIndex) PrimaryColor else LightColor
                         )
-                    }
-                    )
+                    })
                 }
             }
         }) { innerPadding ->
@@ -103,10 +99,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
 }
 
 
-private fun navigateToDestination(
-    navController: NavHostController,
-    route: String
-) {
+private fun navigateToDestination(navController: NavHostController, route: String) {
     if (navController.currentDestination?.route != route) {
         navController.navigate(route) {
             popUpTo(navController.graph.startDestinationId)
@@ -116,13 +109,10 @@ private fun navigateToDestination(
     }
 }
 
-
 @Composable
 fun Navigation(navController: NavHostController, modifier: Modifier) {
     NavHost(
-        navController,
-        startDestination = bottomNavItems[0].route,
-        modifier = modifier
+        navController, startDestination = bottomNavItems[0].route, modifier = modifier
     ) {
         bottomNavItems.forEach { item ->
             composable(item.route) {

@@ -5,11 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,10 +28,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImage
 import com.naol.moviemania.data.remote.model.NetworkResult
 import com.naol.moviemania.data.remote.TMDBApi.Companion.IMAGE_URL
@@ -37,14 +44,14 @@ import com.naol.moviemania.ui.theme.AccentColor
 import com.naol.moviemania.ui.theme.NeutralColor
 import com.naol.moviemania.ui.theme.robotoFontFamily
 import org.koin.androidx.compose.koinViewModel
+import kotlin.math.absoluteValue
 
 
 @Composable
 fun NowPlayingScreen(
     modifier: Modifier = Modifier,
     viewModel: NowPlayingViewModel = koinViewModel(),
-    onMovieClick: (Int) -> Unit = {},
-    onFavoriteClick: (Movie) -> Unit = {}
+    onMovieClick: (Int) -> Unit = {}
 ) {
     val viewState by viewModel.ldNowPlayingMovies.collectAsState()
     LaunchedEffect(key1 = viewModel, block = { viewModel.fetchInitialData() })
@@ -55,15 +62,31 @@ fun NowPlayingScreen(
             })
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 8.dp),
-                contentPadding = PaddingValues(horizontal = 4.dp),
+//                pageSize = threePagesPerViewport,
+//                beyondViewportPageCount = 2,
+                pageSpacing = 16.dp,
+                contentPadding = PaddingValues(8.dp),
             ) { page ->
+                val pageOffset = pagerState.getOffsetDistanceInPages(page).absoluteValue
+
                 NowPlaying(
                     nowPlaying = state.data[page],
+//                    modifier = Modifier
+//                        .height(250.dp * (1 - pageOffset))
+//                        .fillMaxHeight()
+//                        .graphicsLayer {
+//                            val offset =
+//                                ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
+//
+//                            alpha = lerp(
+//                                start = 0.5f,
+//                                stop = 1f,
+//                                fraction = 1f - offset.coerceIn(0f, 1f)
+//                            )
+//                        }
+//                    ,
                     onMovieClick = { onMovieClick(state.data[page].id) },
-                    onFavoriteClick = {viewModel.toggleFavMovie(state.data[page])})
+                    onFavoriteClick = { viewModel.toggleFavMovie(state.data[page]) })
             }
         }
 
@@ -73,6 +96,15 @@ fun NowPlayingScreen(
         }
     }
 
+}
+
+private val threePagesPerViewport = object : PageSize {
+    override fun Density.calculateMainAxisPageSize(
+        availableSpace: Int,
+        pageSpacing: Int
+    ): Int {
+        return ((availableSpace - 2 * pageSpacing) * 0.5f).toInt()
+    }
 }
 
 @Composable
@@ -85,9 +117,7 @@ fun NowPlaying(
     val imagePath = IMAGE_URL + nowPlaying.backdropPath
 
     Box(
-        modifier = Modifier
-            .offset(x = (-16).dp)
-
+        modifier = Modifier.offset(y = (-16).dp)
     ) {
         AsyncImage(
             model = imagePath,
@@ -100,7 +130,7 @@ fun NowPlaying(
         )
 
         Icon(
-            imageVector = if(nowPlaying.isFavorite) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
+            imageVector = if (nowPlaying.isFavorite) Icons.Default.Favorite else Icons.Outlined.FavoriteBorder,
             tint = if (nowPlaying.isFavorite) AccentColor else NeutralColor,
             contentDescription = "",
             modifier = Modifier
