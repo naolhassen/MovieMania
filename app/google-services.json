@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "74558680615",
+    "project_id": "movimania-3b44a",
+    "storage_bucket": "movimania-3b44a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74558680615:android:e2b08da414b1b97cf0a802",
+        "android_client_info": {
+          "package_name": "com.naol.moviemania"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwH6KLyPb-4e2EIc4P705nVOTYiqDTSO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

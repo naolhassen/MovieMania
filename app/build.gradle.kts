@@ -4,17 +4,18 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.gms.google.services)
     kotlin("kapt")
 }
 
 android {
     namespace = "com.naol.moviemania"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.naol.moviemania"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -84,4 +85,10 @@ dependencies {
     implementation(libs.bundles.room)
     //noinspection KaptUsageInsteadOfKsp
     kapt(libs.room.compiler)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
 }
