@@ -3,6 +3,7 @@ package com.naol.moviemania
 import android.app.Application
 import com.naol.moviemania.data.local.MovieManiaDatabase
 import com.naol.moviemania.di.appModule
+import com.naol.moviemania.di.authModule
 import com.naol.moviemania.di.databaseModule
 import com.naol.moviemania.di.useCasesModule
 import com.naol.moviemania.di.viewModelsModule
@@ -20,7 +21,7 @@ class MovieManiaApp : Application() {
 
         startKoin {
             androidContext(this@MovieManiaApp)
-            modules(listOf(appModule, databaseModule, viewModelsModule, useCasesModule))
+            modules(listOf(authModule,appModule, databaseModule, viewModelsModule, useCasesModule))
             androidLogger(Level.DEBUG)
         }
     }

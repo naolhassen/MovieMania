@@ -28,6 +28,7 @@ android {
         localProperties.load(rootProject.file("local.properties").inputStream())
 
         buildConfigField("String", "TMDB_API_KEY", "\"${localProperties["tmdb_api_key"]}\"")
+        buildConfigField("String", "SERVER_CLIENT_ID", "\"${localProperties["server_client_id"]}\"")
     }
 
     buildTypes {
