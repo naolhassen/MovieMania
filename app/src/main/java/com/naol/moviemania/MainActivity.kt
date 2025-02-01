@@ -107,20 +107,12 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 }
             }
         }) { innerPadding ->
-        if (3 == (9 - selectedIndex)) {
             Navigation(
                 navController,
                 Modifier
                     .navigationBarsPadding()
                     .padding(innerPadding)
             )
-        } else {
-            LoginScreen(
-                Modifier
-                    .navigationBarsPadding()
-                    .padding(innerPadding)
-            )
-        }
     }
 }
 
